@@ -21,7 +21,7 @@
                                 <color key="backgroundColor" red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="separatorColor" red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ImagesListCell" rowHeight="441" id="SFz-1z-86V" customClass="ImagesListCell" customModule="ImageFeed" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" alpha="0.0" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ImagesListCell" rowHeight="441" id="SFz-1z-86V" customClass="ImagesListCell" customModule="ImageFeed" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="50" width="393" height="441"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="SFz-1z-86V" id="lBY-6L-MCT">
@@ -50,24 +50,33 @@
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oYF-CK-BfR" userLabel="Gradient">
+                                                    <rect key="frame" x="16" y="407" width="361" height="30"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="30" id="f4x-X8-ug1"/>
+                                                    </constraints>
+                                                </view>
                                             </subviews>
                                             <color key="backgroundColor" red="0.1019607843" green="0.1058823529" blue="0.1333333333" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                             <constraints>
                                                 <constraint firstItem="h6I-cf-zbu" firstAttribute="bottom" secondItem="KRD-OT-DbK" secondAttribute="bottom" constant="8" id="1cz-tV-GgB"/>
                                                 <constraint firstAttribute="trailing" secondItem="h6I-cf-zbu" secondAttribute="trailing" constant="16" id="28Y-DZ-rlF"/>
+                                                <constraint firstItem="oYF-CK-BfR" firstAttribute="trailing" secondItem="h6I-cf-zbu" secondAttribute="trailing" id="D76-Oj-1Ej"/>
                                                 <constraint firstItem="h6I-cf-zbu" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="KRD-OT-DbK" secondAttribute="trailing" constant="8" id="HQz-UI-JX5"/>
                                                 <constraint firstItem="KRD-OT-DbK" firstAttribute="leading" secondItem="h6I-cf-zbu" secondAttribute="leading" constant="8" id="OzK-Ub-5RV"/>
+                                                <constraint firstItem="oYF-CK-BfR" firstAttribute="bottom" secondItem="h6I-cf-zbu" secondAttribute="bottom" id="QVL-Yt-qTk"/>
                                                 <constraint firstItem="h6I-cf-zbu" firstAttribute="top" secondItem="lBY-6L-MCT" secondAttribute="top" constant="4" id="V8H-cX-uwu"/>
                                                 <constraint firstItem="h6I-cf-zbu" firstAttribute="leading" secondItem="lBY-6L-MCT" secondAttribute="leading" constant="16" id="Vhn-hi-5wv"/>
                                                 <constraint firstItem="h6I-cf-zbu" firstAttribute="trailing" secondItem="hZ0-6h-OwP" secondAttribute="trailing" id="Xlb-4F-brc"/>
                                                 <constraint firstItem="hZ0-6h-OwP" firstAttribute="top" secondItem="h6I-cf-zbu" secondAttribute="top" id="aH6-bd-czV"/>
                                                 <constraint firstAttribute="bottom" secondItem="h6I-cf-zbu" secondAttribute="bottom" constant="4" id="fuV-BD-1B7"/>
+                                                <constraint firstItem="oYF-CK-BfR" firstAttribute="leading" secondItem="h6I-cf-zbu" secondAttribute="leading" id="hp5-wo-r5x"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <color key="backgroundColor" red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="calibratedRGB"/>
                                         <connections>
                                             <outlet property="cellImage" destination="h6I-cf-zbu" id="v3S-Bl-Bkh"/>
                                             <outlet property="dateLabel" destination="KRD-OT-DbK" id="6l4-14-YjH"/>
+                                            <outlet property="gradientView" destination="oYF-CK-BfR" id="crt-Af-fp8"/>
                                             <outlet property="likeButton" destination="hZ0-6h-OwP" id="IUH-Wm-BfU"/>
                                         </connections>
                                     </tableViewCell>
