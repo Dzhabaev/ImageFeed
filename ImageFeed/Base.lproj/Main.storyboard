@@ -136,10 +136,26 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="dQ9-7K-h8C">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="ozf-Sb-HhZ">
                                 <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
-                            </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iEA-Fg-LaT">
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="414" placeholderIntrinsicHeight="414" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="dQ9-7K-h8C">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="414"/>
+                                    </imageView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="dQ9-7K-h8C" secondAttribute="trailing" id="BcF-UV-Kgl"/>
+                                    <constraint firstItem="dQ9-7K-h8C" firstAttribute="leading" secondItem="ozf-Sb-HhZ" secondAttribute="leading" id="U7P-w5-5nF"/>
+                                    <constraint firstAttribute="bottom" secondItem="dQ9-7K-h8C" secondAttribute="bottom" id="hkN-ku-fAE"/>
+                                    <constraint firstItem="dQ9-7K-h8C" firstAttribute="top" secondItem="ozf-Sb-HhZ" secondAttribute="top" id="pSd-Tc-4CK"/>
+                                </constraints>
+                                <viewLayoutGuide key="contentLayoutGuide" id="1PW-vC-7zo"/>
+                                <viewLayoutGuide key="frameLayoutGuide" id="tkq-tP-3qh"/>
+                                <connections>
+                                    <outlet property="delegate" destination="rhF-n3-ZVS" id="3OO-nD-TVm"/>
+                                </connections>
+                            </scrollView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iEA-Fg-LaT" userLabel="Back Button">
                                 <rect key="frame" x="8" y="8" width="48" height="48"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="GCe-wN-mjJ"/>
@@ -151,26 +167,37 @@
                                     <action selector="didTapBackButton:" destination="rhF-n3-ZVS" eventType="touchUpInside" id="1nm-7n-906"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XCT-jO-iKY" userLabel="Share Button">
+                                <rect key="frame" x="171.66666666666666" y="766" width="50" height="50"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" image="share_button"/>
+                                <connections>
+                                    <action selector="didTapShareButton:" destination="rhF-n3-ZVS" eventType="touchUpInside" id="cMx-Qm-xlN"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="GP1-0Y-kg1"/>
                         <color key="backgroundColor" red="0.1019607843" green="0.1058823529" blue="0.1333333333" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="dQ9-7K-h8C" secondAttribute="bottom" id="30n-CR-fPP"/>
-                            <constraint firstItem="dQ9-7K-h8C" firstAttribute="leading" secondItem="8UR-gg-r39" secondAttribute="leading" id="6HW-Vu-61R"/>
-                            <constraint firstItem="iEA-Fg-LaT" firstAttribute="leading" secondItem="GP1-0Y-kg1" secondAttribute="leading" constant="8" id="LM3-sP-rSB"/>
-                            <constraint firstItem="dQ9-7K-h8C" firstAttribute="top" secondItem="8UR-gg-r39" secondAttribute="top" id="nTQ-Fr-vU0"/>
-                            <constraint firstAttribute="trailing" secondItem="dQ9-7K-h8C" secondAttribute="trailing" id="zG2-g3-yEF"/>
-                            <constraint firstItem="iEA-Fg-LaT" firstAttribute="top" secondItem="GP1-0Y-kg1" secondAttribute="top" constant="8" id="zW7-2W-iua"/>
+                            <constraint firstItem="iEA-Fg-LaT" firstAttribute="top" secondItem="GP1-0Y-kg1" secondAttribute="top" constant="8" id="2aa-MI-dsH"/>
+                            <constraint firstItem="GP1-0Y-kg1" firstAttribute="bottom" secondItem="XCT-jO-iKY" secondAttribute="bottom" constant="36" id="Fhc-i1-qMT"/>
+                            <constraint firstItem="ozf-Sb-HhZ" firstAttribute="top" secondItem="8UR-gg-r39" secondAttribute="top" id="Jfc-OQ-WIH"/>
+                            <constraint firstItem="GP1-0Y-kg1" firstAttribute="trailing" secondItem="ozf-Sb-HhZ" secondAttribute="trailing" id="QeY-wA-ZMs"/>
+                            <constraint firstItem="ozf-Sb-HhZ" firstAttribute="leading" secondItem="GP1-0Y-kg1" secondAttribute="leading" id="VY7-kh-XLB"/>
+                            <constraint firstAttribute="bottom" secondItem="ozf-Sb-HhZ" secondAttribute="bottom" id="XBD-kw-0YT"/>
+                            <constraint firstItem="XCT-jO-iKY" firstAttribute="centerX" secondItem="GP1-0Y-kg1" secondAttribute="centerX" id="wPk-qG-tRA"/>
+                            <constraint firstItem="iEA-Fg-LaT" firstAttribute="leading" secondItem="GP1-0Y-kg1" secondAttribute="leading" constant="8" id="wru-ZQ-cIO"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Abd-nM-kwx"/>
                     <connections>
                         <outlet property="imageView" destination="dQ9-7K-h8C" id="gSp-kg-DZd"/>
+                        <outlet property="scrollView" destination="ozf-Sb-HhZ" id="y1w-Jt-lER"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BsG-Nz-ud6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="810" y="27"/>
+            <point key="canvasLocation" x="809.92366412213732" y="26.760563380281692"/>
         </scene>
         <!--Profile View Controller-->
         <scene sceneID="pwA-9W-d6J">
@@ -258,6 +285,7 @@
         <image name="like_button_on" width="44" height="44"/>
         <image name="logout_button" width="44" height="44"/>
         <image name="nav_back_button_white" width="24" height="24"/>
+        <image name="share_button" width="50" height="50"/>
         <image name="tab_editorial_active" width="20" height="22"/>
         <image name="tab_profile_active" width="24" height="24"/>
     </resources>
