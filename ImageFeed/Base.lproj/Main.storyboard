@@ -288,7 +288,7 @@ Sign In Button</string>
                                 </wkWebViewConfiguration>
                             </wkWebView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dZk-Lo-Yvb" userLabel="Back Button">
-                                <rect key="frame" x="8" y="9" width="48" height="48"/>
+                                <rect key="frame" x="0.0" y="0.0" width="48" height="48"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="48" id="D4L-IN-DXt"/>
                                     <constraint firstAttribute="height" constant="48" id="JIa-Vn-MoG"/>
@@ -299,20 +299,28 @@ Sign In Button</string>
                                     <action selector="didTapBackButton:" destination="mF9-G9-2S8" eventType="touchUpInside" id="LzH-65-lWh"/>
                                 </connections>
                             </button>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="JU3-Ae-O3p">
+                                <rect key="frame" x="0.0" y="44" width="393" height="4"/>
+                                <color key="tintColor" red="0.1019607843" green="0.1058823529" blue="0.1333333333" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                            </progressView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="61f-cz-R9p"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="JU3-Ae-O3p" firstAttribute="leading" secondItem="61f-cz-R9p" secondAttribute="leading" id="HhR-lO-aEo"/>
                             <constraint firstAttribute="bottom" secondItem="eqn-B5-dbZ" secondAttribute="bottom" id="Pqc-pf-gUp"/>
-                            <constraint firstItem="dZk-Lo-Yvb" firstAttribute="leading" secondItem="61f-cz-R9p" secondAttribute="leading" constant="8" id="QwG-QD-hk2"/>
+                            <constraint firstItem="dZk-Lo-Yvb" firstAttribute="leading" secondItem="61f-cz-R9p" secondAttribute="leading" id="QwG-QD-hk2"/>
+                            <constraint firstItem="JU3-Ae-O3p" firstAttribute="bottom" secondItem="dZk-Lo-Yvb" secondAttribute="bottom" id="Sih-1b-joL"/>
                             <constraint firstItem="eqn-B5-dbZ" firstAttribute="top" secondItem="nL6-RV-5Qh" secondAttribute="top" id="aAT-62-0Vj"/>
+                            <constraint firstItem="61f-cz-R9p" firstAttribute="trailing" secondItem="JU3-Ae-O3p" secondAttribute="trailing" id="caC-06-zkJ"/>
                             <constraint firstAttribute="trailing" secondItem="eqn-B5-dbZ" secondAttribute="trailing" id="ecC-yW-AVj"/>
                             <constraint firstItem="eqn-B5-dbZ" firstAttribute="leading" secondItem="nL6-RV-5Qh" secondAttribute="leading" id="mCk-dj-ceK"/>
-                            <constraint firstItem="dZk-Lo-Yvb" firstAttribute="top" secondItem="61f-cz-R9p" secondAttribute="top" constant="9" id="vRl-4T-9Ud"/>
+                            <constraint firstItem="dZk-Lo-Yvb" firstAttribute="top" secondItem="61f-cz-R9p" secondAttribute="top" id="vRl-4T-9Ud"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="IAP-6m-823"/>
                     <connections>
+                        <outlet property="progressView" destination="JU3-Ae-O3p" id="Idj-Cc-Uzx"/>
                         <outlet property="webView" destination="eqn-B5-dbZ" id="DdY-Ju-CMs"/>
                     </connections>
                 </viewController>
