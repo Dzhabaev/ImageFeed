@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		722266C02ACB5C4E00F4B00C /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 722266BF2ACB5C4E00F4B00C /* SplashViewController.swift */; };
 		725821AD2AC70BC600CBB96F /* OAuth2Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725821AC2AC70BC600CBB96F /* OAuth2Service.swift */; };
 		725821AF2AC70F7100CBB96F /* OAuthTokenResponseBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725821AE2AC70F7100CBB96F /* OAuthTokenResponseBody.swift */; };
 		725821B12AC7131D00CBB96F /* OAuth2TokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725821B02AC7131D00CBB96F /* OAuth2TokenStorage.swift */; };
@@ -25,6 +26,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		722266BF2ACB5C4E00F4B00C /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		725821AC2AC70BC600CBB96F /* OAuth2Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2Service.swift; sourceTree = "<group>"; };
 		725821AE2AC70F7100CBB96F /* OAuthTokenResponseBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthTokenResponseBody.swift; sourceTree = "<group>"; };
 		725821B02AC7131D00CBB96F /* OAuth2TokenStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2TokenStorage.swift; sourceTree = "<group>"; };
@@ -67,6 +69,7 @@
 		7269C1C22AC4BA6D002B6C39 /* Auth */ = {
 			isa = PBXGroup;
 			children = (
+				722266BF2ACB5C4E00F4B00C /* SplashViewController.swift */,
 				7269C1C02AC4B7C6002B6C39 /* AuthViewController.swift */,
 				7269C1C32AC4BB7B002B6C39 /* WebViewViewController.swift */,
 				725821AC2AC70BC600CBB96F /* OAuth2Service.swift */,
@@ -203,6 +206,7 @@
 				726E5EB92AAF70D800DFBE30 /* ProfileViewController.swift in Sources */,
 				72ECF7D82A9A561A00E84EB5 /* AppDelegate.swift in Sources */,
 				725821AF2AC70F7100CBB96F /* OAuthTokenResponseBody.swift in Sources */,
+				722266C02ACB5C4E00F4B00C /* SplashViewController.swift in Sources */,
 				725821AD2AC70BC600CBB96F /* OAuth2Service.swift in Sources */,
 				7269C1C12AC4B7C6002B6C39 /* AuthViewController.swift in Sources */,
 				72B75D302AC442FF00B3C6FC /* Constants.swift in Sources */,
