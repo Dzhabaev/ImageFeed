@@ -10,7 +10,7 @@ import UIKit
 final class SplashViewController: UIViewController {
     private let ShowAuthenticationScreenSegueIdentifier = "ShowAuthenticationScreen"
     
-    private let oauth2Service = OAuth2Service()
+    private let oauth2Service = OAuth2Service.shared
     private let oauth2TokenStorage = OAuth2TokenStorage()
     
     override func viewDidAppear(_ animated: Bool) {
@@ -40,6 +40,8 @@ final class SplashViewController: UIViewController {
     }
 }
 
+// MARK: - Segue Preparation
+
 extension SplashViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == ShowAuthenticationScreenSegueIdentifier {
@@ -53,6 +55,9 @@ extension SplashViewController {
         }
     }
 }
+
+// MARK: - AuthViewControllerDelegate
+
 extension SplashViewController: AuthViewControllerDelegate {
     func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
         dismiss(animated: true) { [weak self] in

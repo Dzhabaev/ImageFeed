@@ -8,11 +8,14 @@
 import UIKit
 import WebKit
 
+// MARK: - WebViewViewControllerDelegate
 
 protocol WebViewViewControllerDelegate: AnyObject {
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String)
     func webViewViewControllerDidCancel(_ vc: WebViewViewController)
 }
+
+// MARK: - WebViewViewController
 
 final class WebViewViewController: UIViewController {
     @IBOutlet private var webView: WKWebView!
@@ -24,18 +27,7 @@ final class WebViewViewController: UIViewController {
         super.viewDidLoad()
         
         webView.navigationDelegate = self
-        
-        var urlComponents = URLComponents(string: UnsplashAuthorizeURLString)!
-        urlComponents.queryItems = [
-            URLQueryItem(name: "client_id", value: AccessKey),
-            URLQueryItem(name: "redirect_uri", value: RedirectURI),
-            URLQueryItem(name: "response_type", value: "code"),
-            URLQueryItem(name: "scope", value: AccessScope)
-        ]
-        let url = urlComponents.url!
-        let request = URLRequest(url: url)
-        webView.load(request)
-        
+        loadWebView()
         updateProgress()
     }
     
@@ -51,6 +43,7 @@ final class WebViewViewController: UIViewController {
             options: .new,
             context: nil)
     }
+    
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         webView.removeObserver(
@@ -75,14 +68,36 @@ final class WebViewViewController: UIViewController {
                 context: context)
         }
     }
+    
     private func updateProgress() {
         progressView.progress = Float(webView.estimatedProgress)
         progressView.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.0001
     }
 }
 
+// MARK: - Private Methods
+
+private extension WebViewViewController {
+    func loadWebView() {
+        var urlComponents = URLComponents(string: UnsplashAuthorizeURLString)!
+        urlComponents.queryItems = [
+            URLQueryItem(name: "client_id", value: AccessKey),
+            URLQueryItem(name: "redirect_uri", value: RedirectURI),
+            URLQueryItem(name: "response_type", value: "code"),
+            URLQueryItem(name: "scope", value: AccessScope)
+        ]
+        let url = urlComponents.url!
+        let request = URLRequest(url: url)
+        webView.load(request)
+    }
+}
+
+// MARK: - WKNavigationDelegate
+
 extension WebViewViewController: WKNavigationDelegate {
-    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+    func webView(_ webView: WKWebView,
+                 decidePolicyFor navigationAction: WKNavigationAction,
+                 decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         if let code = code(from: navigationAction) {
             delegate?.webViewViewController(self, didAuthenticateWithCode: code)
             decisionHandler(.cancel)
@@ -90,6 +105,7 @@ extension WebViewViewController: WKNavigationDelegate {
             decisionHandler(.allow)
         }
     }
+    
     private func code(from navigationAction: WKNavigationAction) -> String? {
         if
             let url = navigationAction.request.url,
