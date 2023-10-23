@@ -20,6 +20,7 @@
 		7269C1C42AC4BB7B002B6C39 /* WebViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7269C1C32AC4BB7B002B6C39 /* WebViewViewController.swift */; };
 		726E5EB92AAF70D800DFBE30 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726E5EB82AAF70D800DFBE30 /* ProfileViewController.swift */; };
 		72716A872AB1A71300582E89 /* SingleImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72716A862AB1A71300582E89 /* SingleImageViewController.swift */; };
+		729A13D22AE70CA500CB80E9 /* UIBlockingProgressHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 729A13D12AE70CA500CB80E9 /* UIBlockingProgressHUD.swift */; };
 		72B75D302AC442FF00B3C6FC /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72B75D2F2AC442FF00B3C6FC /* Constants.swift */; };
 		72ECF7D82A9A561A00E84EB5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72ECF7D72A9A561A00E84EB5 /* AppDelegate.swift */; };
 		72ECF7DA2A9A561A00E84EB5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72ECF7D92A9A561A00E84EB5 /* SceneDelegate.swift */; };
@@ -42,6 +43,7 @@
 		7269C1C32AC4BB7B002B6C39 /* WebViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewViewController.swift; sourceTree = "<group>"; };
 		726E5EB82AAF70D800DFBE30 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		72716A862AB1A71300582E89 /* SingleImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleImageViewController.swift; sourceTree = "<group>"; };
+		729A13D12AE70CA500CB80E9 /* UIBlockingProgressHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBlockingProgressHUD.swift; sourceTree = "<group>"; };
 		72B75D2F2AC442FF00B3C6FC /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		72ECF7D42A9A561A00E84EB5 /* ImageFeed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageFeed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		72ECF7D72A9A561A00E84EB5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -100,6 +102,7 @@
 				722266BF2ACB5C4E00F4B00C /* SplashViewController.swift */,
 				7269C1C02AC4B7C6002B6C39 /* AuthViewController.swift */,
 				7269C1C32AC4BB7B002B6C39 /* WebViewViewController.swift */,
+				729A13D12AE70CA500CB80E9 /* UIBlockingProgressHUD.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -249,6 +252,7 @@
 				725C8A802ACDDC7C00D9BB70 /* URLRequest+Extensions.swift in Sources */,
 				7269C1C42AC4BB7B002B6C39 /* WebViewViewController.swift in Sources */,
 				72ECF7DA2A9A561A00E84EB5 /* SceneDelegate.swift in Sources */,
+				729A13D22AE70CA500CB80E9 /* UIBlockingProgressHUD.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
