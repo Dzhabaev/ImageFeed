@@ -21,23 +21,7 @@ class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        
-        
-        if let token = tokenStorage.token {
-            ProfileService.shared.fetchProfile(token: token) { result in
-                switch result {
-                case .success(let profile):
-                    self.updateProfileDetails(profile: profile)
-                case .failure(let error):
-                    print("Error fetching profile: \(error)")
-                }
-            }
-        }
-    }
-    private func updateProfileDetails(profile: ProfileService.Profile) {
-        nameLabel.text = profile.name
-        loginNameLabel.text = profile.loginName
-        descriptionLabel.text = profile.bio
+        updateProfileDetails(profile: profileService.profile)
     }
     
     private func setupUI() {
@@ -103,5 +87,14 @@ class ProfileViewController: UIViewController {
     }
     
     @objc private func didTapLogoutButton() {
+    }
+}
+
+extension ProfileViewController {
+    private func updateProfileDetails(profile: Profile?) {
+        guard let profile = profileService.profile else {return}
+        nameLabel.text = profile.name
+        loginNameLabel.text = profile.loginName
+        descriptionLabel.text = profile.bio
     }
 }
