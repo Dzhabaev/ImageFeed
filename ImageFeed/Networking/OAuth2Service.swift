@@ -10,17 +10,18 @@ import Foundation
 // MARK: - OAuth2Service
 
 final class OAuth2Service {
-    
     private let urlSession = URLSession.shared
+    
     private var task: URLSessionTask?
     private var lastCode: String?
     
     func fetchOAuthToken(_ code: String, completion: @escaping (Result<String, Error>) -> Void) {
         assert(Thread.isMainThread)
-        if lastCode == code { return }
+        if lastCode == code {
+            return
+        }
         task?.cancel()
         lastCode = code
-        
         let request = makeRequest(code: code)
         let task = urlSession.dataTask(with: request) { data, response, error in
             DispatchQueue.main.async {

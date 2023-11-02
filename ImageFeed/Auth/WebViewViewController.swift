@@ -79,7 +79,7 @@ final class WebViewViewController: UIViewController {
 
 private extension WebViewViewController {
     func loadWebView() {
-        var urlComponents = URLComponents(string: UnsplashAuthorizeURLString)!
+        var urlComponents = URLComponents(string: AuthorizeURL)!
         urlComponents.queryItems = [
             URLQueryItem(name: "client_id", value: AccessKey),
             URLQueryItem(name: "redirect_uri", value: RedirectURI),

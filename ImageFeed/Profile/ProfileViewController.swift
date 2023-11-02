@@ -8,6 +8,8 @@
 import UIKit
 
 class ProfileViewController: UIViewController {
+    private let profileService = ProfileService.shared
+    private let tokenStorage = OAuth2TokenStorage()
     private let avatarImageView = UIImageView()
     private let nameLabel = UILabel()
     private let loginNameLabel = UILabel()
@@ -19,6 +21,23 @@ class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        
+        
+        if let token = tokenStorage.token {
+            ProfileService.shared.fetchProfile(token: token) { result in
+                switch result {
+                case .success(let profile):
+                    self.updateProfileDetails(profile: profile)
+                case .failure(let error):
+                    print("Error fetching profile: \(error)")
+                }
+            }
+        }
+    }
+    private func updateProfileDetails(profile: ProfileService.Profile) {
+        nameLabel.text = profile.name
+        loginNameLabel.text = profile.loginName
+        descriptionLabel.text = profile.bio
     }
     
     private func setupUI() {
