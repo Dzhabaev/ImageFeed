@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 class ProfileViewController: UIViewController {
     private let profileService = ProfileService.shared
@@ -17,11 +18,14 @@ class ProfileViewController: UIViewController {
     private let logoutButton = UIButton.systemButton(with: UIImage(named: "logout_button")!,
                                                      target: self,
                                                      action: #selector(didTapLogoutButton))
+    private var profileImageServiceObserver: NSObjectProtocol?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
         updateProfileDetails(profile: profileService.profile)
+        observeAvatarChanges()
+        updateAvatar()
     }
     
     private func setupUI() {
@@ -96,5 +100,38 @@ extension ProfileViewController {
         nameLabel.text = profile.name
         loginNameLabel.text = profile.loginName
         descriptionLabel.text = profile.bio
+    }
+    
+    private func observeAvatarChanges(){
+        profileImageServiceObserver = NotificationCenter.default
+            .addObserver(
+                forName: ProfileImageService.DidChangeNotification,
+                object: nil,
+                queue: .main
+            ){
+                [weak self] _ in
+                guard let self = self else {return}
+                self.updateAvatar()
+            }
+        updateAvatar()
+    }
+    
+    private func updateAvatar() {
+        guard
+            let profileImageURL = ProfileImageService.shared.avatarURL,
+            let url = URL(string: profileImageURL)
+        else {
+            return
+        }
+        avatarImageView.kf.indicatorType = .activity
+        let processor = RoundCornerImageProcessor(cornerRadius: 61)
+        avatarImageView.kf.setImage(
+            with: url,
+            placeholder: UIImage(named: "placeholder"),
+            options: [.processor(processor)]
+        )
+        let cache = ImageCache.default
+        cache.clearDiskCache()
+        cache.clearMemoryCache()
     }
 }

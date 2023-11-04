@@ -10,17 +10,17 @@ import ProgressHUD
 
 final class SplashViewController: UIViewController {
     private let profileService = ProfileService.shared
+    private let profileImageService = ProfileImageService.shared
     private let ShowAuthenticationScreenSegueIdentifier = "ShowAuthenticationScreen"
     private let oauth2Service = OAuth2Service()
     private let oauth2TokenStorage = OAuth2TokenStorage()
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
+        
         if (oauth2TokenStorage.token != nil) {
             guard let token = oauth2TokenStorage.token else { return }
             fetchProfile(token: token)
-            switchToTabBarController()
         } else {
             performSegue(withIdentifier: ShowAuthenticationScreenSegueIdentifier, sender: nil)
         }
@@ -76,12 +76,14 @@ extension SplashViewController: AuthViewControllerDelegate {
             switch result {
             case .success(let token):
                 self.switchToTabBarController()
+                self.oauth2TokenStorage.token = token
                 self.fetchProfile(token: token)
                 UIBlockingProgressHUD.dismiss()
-            case .failure:
-                UIBlockingProgressHUD.dismiss()
+            case .failure (let error):
+                self.showAlert(with: error)
                 break
             }
+            UIBlockingProgressHUD.dismiss()
         }
     }
     
@@ -90,12 +92,25 @@ extension SplashViewController: AuthViewControllerDelegate {
             guard let self = self else { return }
             switch result {
             case .success:
-                self.switchToTabBarController()
-                UIBlockingProgressHUD.dismiss()
-            case .failure:
-                UIBlockingProgressHUD.dismiss()
+                guard let username = self.profileService.profile?.username else { return }
+                self.profileImageService.fetchProfileImageURL(username: username)  { _ in }
+                DispatchQueue.main.async {
+                    self.switchToTabBarController()
+                }
+            case .failure (let error):
+                self.showAlert(with: error)
                 break
             }
+            UIBlockingProgressHUD.dismiss()
         }
+    }
+    
+    private func showAlert(with error: Error) {
+        let alert = UIAlertController(
+            title: "Что-то пошло не так(",
+            message: "Не удалось войти в систему",
+            preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .cancel))
+        self.present(alert, animated: true, completion: nil)
     }
 }
