@@ -16,10 +16,10 @@ final class OAuth2Service {
     private var lastCode: String?
     private (set) var authToken: String? {
         get {
-            return OAuth2TokenStorage().token
+            return OAuth2TokenStorage.shared.token
         }
         set {
-            OAuth2TokenStorage().token = newValue
+            OAuth2TokenStorage.shared.token = newValue
         }
     }
     

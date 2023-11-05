@@ -13,7 +13,7 @@ final class SplashViewController: UIViewController {
     private let profileImageService = ProfileImageService.shared
     private let ShowAuthenticationScreenSegueIdentifier = "ShowAuthenticationScreen"
     private let oauth2Service = OAuth2Service()
-    private let oauth2TokenStorage = OAuth2TokenStorage()
+    private let oauth2TokenStorage = OAuth2TokenStorage.shared
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -75,7 +75,6 @@ extension SplashViewController: AuthViewControllerDelegate {
             guard let self = self else { return }
             switch result {
             case .success(let token):
-                self.switchToTabBarController()
                 self.oauth2TokenStorage.token = token
                 self.fetchProfile(token: token)
                 UIBlockingProgressHUD.dismiss()
