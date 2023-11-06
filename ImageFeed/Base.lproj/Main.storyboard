@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22155" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="DUQ-gp-Tgv">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22155" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -24,7 +24,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XuY-gx-c87" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-746" y="382"/>
+            <point key="canvasLocation" x="-714" y="26"/>
         </scene>
         <!--ImageList-->
         <scene sceneID="tne-QT-ifu">
@@ -212,7 +212,7 @@
                                 </constraints>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UlL-Z5-SPn">
-                                <rect key="frame" x="16" y="758" width="382" height="48"/>
+                                <rect key="frame" x="16" y="724" width="382" height="48"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="Eor-KJ-nnr"/>
@@ -308,43 +308,13 @@ Sign In Button</string>
             </objects>
             <point key="canvasLocation" x="844" y="-658"/>
         </scene>
-        <!--Splash View Controller-->
-        <scene sceneID="pn4-ri-ixU">
-            <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="vj1-Fq-fcG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-                <viewController storyboardIdentifier="SplashViewController" id="DUQ-gp-Tgv" customClass="SplashViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="MVf-GR-WAG">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LogoLaunchScreen" translatesAutoresizingMaskIntoConstraints="NO" id="o03-NE-ZHL">
-                                <rect key="frame" x="169.5" y="416" width="75" height="78"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="75" id="Vf5-71-XDJ"/>
-                                </constraints>
-                            </imageView>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="oyh-ec-2gg"/>
-                        <color key="backgroundColor" red="0.1019607843" green="0.1058823529" blue="0.1333333333" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                        <constraints>
-                            <constraint firstItem="o03-NE-ZHL" firstAttribute="centerY" secondItem="oyh-ec-2gg" secondAttribute="centerY" id="RSu-8K-VP9"/>
-                            <constraint firstItem="o03-NE-ZHL" firstAttribute="centerX" secondItem="oyh-ec-2gg" secondAttribute="centerX" id="cGG-yX-pPP"/>
-                        </constraints>
-                    </view>
-                    <connections>
-                        <segue destination="9EL-cd-QwU" kind="presentation" identifier="ShowAuthenticationScreen" modalPresentationStyle="fullScreen" id="ACz-p2-Aav"/>
-                    </connections>
-                </viewController>
-            </objects>
-            <point key="canvasLocation" x="-1602" y="-81"/>
-        </scene>
         <!--Navigation Controller-->
         <scene sceneID="jha-lI-05L">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="9EL-cd-QwU" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="FSr-A4-rQI">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                        <rect key="frame" x="0.0" y="48" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -359,7 +329,6 @@ Sign In Button</string>
     </scenes>
     <resources>
         <image name="0" width="200" height="132"/>
-        <image name="LogoLaunchScreen" width="75" height="78"/>
         <image name="auth_screen_logo" width="60" height="60"/>
         <image name="like_button_off" width="44" height="44"/>
         <image name="like_button_on" width="44" height="44"/>

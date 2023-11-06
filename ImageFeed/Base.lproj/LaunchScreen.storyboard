@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22155" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22131"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -17,14 +17,14 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LogoLaunchScreen" translatesAutoresizingMaskIntoConstraints="NO" id="twm-CK-R2t">
-                                <rect key="frame" x="159" y="399.66666666666663" width="75" height="77.666666666666657"/>
+                                <rect key="frame" x="159" y="387" width="75" height="78"/>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="twm-CK-R2t" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="GPz-6M-gF6"/>
-                            <constraint firstItem="twm-CK-R2t" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="ssg-6G-w7B"/>
+                            <constraint firstItem="twm-CK-R2t" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="lXW-iZ-eVq"/>
+                            <constraint firstItem="twm-CK-R2t" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="tFa-7K-y4h"/>
                         </constraints>
                     </view>
                 </viewController>
