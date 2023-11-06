@@ -12,7 +12,7 @@
         <!--Tab Bar Controller-->
         <scene sceneID="QIu-kW-Fea">
             <objects>
-                <tabBarController storyboardIdentifier="TabBarViewController" id="5P7-Pa-Bby" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="TabBarViewController" id="5P7-Pa-Bby" customClass="TabBarController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="CiS-3q-6fX">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -21,10 +21,6 @@
                             <color key="backgroundColor" red="0.1019607843" green="0.1058823529" blue="0.1333333333" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         </tabBarAppearance>
                     </tabBar>
-                    <connections>
-                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="viewControllers" id="QPc-m5-iJN"/>
-                        <segue destination="HB1-s7-Cfo" kind="relationship" relationship="viewControllers" id="RpQ-f1-gD4"/>
-                    </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XuY-gx-c87" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -200,22 +196,6 @@
             </objects>
             <point key="canvasLocation" x="809.92366412213732" y="26.760563380281692"/>
         </scene>
-        <!--Profile View Controller-->
-        <scene sceneID="pwA-9W-d6J">
-            <objects>
-                <viewController storyboardIdentifier="ProfileViewController" id="HB1-s7-Cfo" customClass="ProfileViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="Gt2-qr-h36">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="BUf-NW-quP"/>
-                        <color key="backgroundColor" red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="calibratedRGB"/>
-                    </view>
-                    <tabBarItem key="tabBarItem" title="" image="tab_profile_active" id="087-v4-35w"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="wNS-M1-oZX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="65" y="687"/>
-        </scene>
         <!--AuthViewController-->
         <scene sceneID="7VU-rV-9dX">
             <objects>
@@ -331,6 +311,7 @@ Sign In Button</string>
         <!--Splash View Controller-->
         <scene sceneID="pn4-ri-ixU">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vj1-Fq-fcG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <viewController storyboardIdentifier="SplashViewController" id="DUQ-gp-Tgv" customClass="SplashViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="MVf-GR-WAG">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
@@ -354,7 +335,6 @@ Sign In Button</string>
                         <segue destination="9EL-cd-QwU" kind="presentation" identifier="ShowAuthenticationScreen" modalPresentationStyle="fullScreen" id="ACz-p2-Aav"/>
                     </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="vj1-Fq-fcG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1602" y="-81"/>
         </scene>
@@ -387,7 +367,6 @@ Sign In Button</string>
         <image name="nav_back_button_white" width="24" height="24"/>
         <image name="share_button" width="50" height="50"/>
         <image name="tab_editorial_active" width="20" height="22"/>
-        <image name="tab_profile_active" width="24" height="24"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
