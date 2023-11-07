@@ -28,16 +28,14 @@ final class SplashViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        if (oauth2TokenStorage.token != nil) {
-            guard let token = oauth2TokenStorage.token else { return }
+        if let token = oauth2TokenStorage.token {
             fetchProfile(token: token)
         } else {
-            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
-            guard let authViewController = storyBoard.instantiateViewController(withIdentifier: "AuthViewController")
-                    as? AuthViewController else {return}
+            let authViewController = AuthViewController()
             authViewController.delegate = self
-            authViewController.modalPresentationStyle = .fullScreen
-            present(authViewController, animated: true, completion: nil)
+            let navigationController = UINavigationController(rootViewController: authViewController)
+            navigationController.modalPresentationStyle = .fullScreen
+            present(navigationController, animated: true, completion: nil)
         }
     }
     

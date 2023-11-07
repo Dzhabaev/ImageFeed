@@ -35,37 +35,9 @@ final class ProfileService {
 
 extension ProfileService {
     private func makeRequest(token: String) -> URLRequest {
-        guard let url = URL(string: "\(apiBaseURL)" + "/me") else { fatalError("Failed to create URL") }
+        guard let url = URL(string: "\(Constants.apiBaseURL)" + "/me") else { fatalError("Failed to create URL") }
         var request = URLRequest(url: url)
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
-    }
-}
-
-struct ProfileResult: Codable {
-    let username: String
-    let firstName: String
-    let lastName: String
-    let bio: String?
-    
-    enum CodingKeys: String, CodingKey {
-        case username
-        case firstName = "first_name"
-        case lastName = "last_name"
-        case bio
-    }
-}
-
-struct Profile: Codable {
-    let username: String
-    let name: String
-    let loginName: String
-    let bio: String?
-    
-    init(decodedData: ProfileResult) {
-        self.username = decodedData.username
-        self.name = (decodedData.firstName ) + " " + (decodedData.lastName )
-        self.loginName = "@" + (decodedData.username )
-        self.bio = decodedData.bio
     }
 }
