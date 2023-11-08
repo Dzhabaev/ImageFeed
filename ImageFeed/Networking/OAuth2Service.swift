@@ -10,62 +10,54 @@ import Foundation
 // MARK: - OAuth2Service
 
 final class OAuth2Service {
-    
     static let shared = OAuth2Service()
     private let urlSession = URLSession.shared
-    
+    private var task: URLSessionTask?
+    private var lastCode: String?
     private (set) var authToken: String? {
         get {
-            return OAuth2TokenStorage().token
+            return OAuth2TokenStorage.shared.token
         }
         set {
-            OAuth2TokenStorage().token = newValue
+            OAuth2TokenStorage.shared.token = newValue
         }
     }
     
-    private init() {
-    }
-    
-    func fetchOAuthToken(
-        _ code: String,
-        completion: @escaping (Result<String, Error>) -> Void ){
-            let request = authTokenRequest(code: code)
-            let task = object(for: request) { [weak self] result in
-                guard let self = self else { return }
-                switch result {
-                case .success(let body):
-                    let authToken = body.accessToken
-                    self.authToken = authToken
-                    completion(.success(authToken))
-                case .failure(let error):
-                    completion(.failure(error))
-                } }
-            task.resume()
+    func fetchOAuthToken(_ code: String, completion: @escaping (Result<String, Error>) -> Void) {
+        assert(Thread.isMainThread)
+        if lastCode == code {return}
+        task?.cancel()
+        lastCode = code
+        
+        let request = authTokenRequest(code: code)
+        let session = URLSession.shared
+        let task = session.objectTask(for: request) {[weak self] (result: Result<OAuthTokenResponseBody, Error>) in
+            guard let self = self else {return}
+            switch result {
+            case .success(let decodedObject):
+                let authToken = decodedObject.accessToken
+                self.authToken = authToken
+                completion(.success(authToken))
+                self.task = nil
+                
+            case .failure(let error):
+                completion(.failure(error))
+            }
         }
+        self.task = task
+        task.resume()
+    }
 }
 
 // MARK: - Private Methods
 
 extension OAuth2Service {
-    private func object(
-        for request: URLRequest,
-        completion: @escaping (Result<OAuthTokenResponseBody, Error>) -> Void
-    ) -> URLSessionTask {
-        let decoder = JSONDecoder()
-        return urlSession.data(for: request) { (result: Result<Data, Error>) in
-            let response = result.flatMap { data -> Result<OAuthTokenResponseBody, Error> in
-                Result { try decoder.decode(OAuthTokenResponseBody.self, from: data) }
-            }
-            completion(response)
-        }
-    }
-    
     private func authTokenRequest(code: String) -> URLRequest {
         URLRequest.makeHTTPRequest(
             path: "/oauth/token"
-            + "?client_id=\(AccessKey)"
-            + "&&client_secret=\(SecretKey)"
-            + "&&redirect_uri=\(RedirectURI)"
+            + "?client_id=\(Constants.accessKey)"
+            + "&&client_secret=\(Constants.secretKey)"
+            + "&&redirect_uri=\(Constants.redirectURI)"
             + "&&code=\(code)"
             + "&&grant_type=authorization_code",
             httpMethod: "POST",
