@@ -12,6 +12,7 @@ class ImagesListViewController: UIViewController {
     
     private let photosName: [String] = Array(0..<20).map{ "\($0)" }
     private let ShowSingleImageSegueIdentifier = "ShowSingleImage"
+    private let imagesListService = ImagesListService.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,6 +35,9 @@ class ImagesListViewController: UIViewController {
         } else {
             super.prepare(for: segue, sender: sender)
         }
+    }
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        indexPath.row + 1 == imagesListService.photos.count
     }
 }
 
