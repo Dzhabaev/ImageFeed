@@ -143,7 +143,7 @@ extension ProfileViewController {
         let processor = RoundCornerImageProcessor(cornerRadius: 61)
         avatarImageView.kf.setImage(
             with: url,
-            placeholder: UIImage(named: "placeholder"),
+            placeholder: UIImage(named: "load_avatar"),
             options: [.processor(processor)]
         )
         let cache = ImageCache.default

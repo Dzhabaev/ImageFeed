@@ -6,16 +6,13 @@
 //
 
 import UIKit
+import Kingfisher
 
 class SingleImageViewController: UIViewController {
-    var image: UIImage? {
+    var imageURL: URL? {
         didSet {
-            if isViewLoaded {
-                imageView.image = image
-                if let image = image {
-                    rescaleAndCenterImageInScrollView(image: image)
-                }
-            }
+            guard isViewLoaded else { return }
+            setImage()
         }
     }
     
@@ -24,20 +21,37 @@ class SingleImageViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        imageView.image = image
+        setImage()
         scrollView.minimumZoomScale = 0.1
         scrollView.maximumZoomScale = 1.25
-        rescaleAndCenterImageInScrollView(image: image)
     }
+    
+    // MARK: - Actions
     
     @IBAction func didTapBackButton(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
     @IBAction func didTapShareButton(_ sender: Any) {
         let share = UIActivityViewController(
-            activityItems: [image!],
+            activityItems: [imageView.image as Any],
             applicationActivities: nil)
         present(share, animated: true, completion: nil)
+    }
+    
+    // MARK: - Private Methods
+    
+    private func setImage() {
+        UIBlockingProgressHUD.show()
+        imageView.kf.setImage(with: imageURL) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let imageResult):
+                self.rescaleAndCenterImageInScrollView(image: imageResult.image)
+            case .failure(let error):
+                print("Ошибка загрузки картинки: \(error)")
+            }
+            UIBlockingProgressHUD.dismiss()
+        }
     }
     
     private func rescaleAndCenterImageInScrollView(image: UIImage?) {

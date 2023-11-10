@@ -58,7 +58,7 @@ final class WebViewViewController: UIViewController {
         progressView.progressTintColor = .ypBlack
         
         backButton = UIButton()
-        backButton.setImage(UIImage(named: "nav_back_button"), for: .normal)
+        backButton.setImage(UIImage(named: "back_button"), for: .normal)
         backButton.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
         view.addSubview(backButton)
         backButton.translatesAutoresizingMaskIntoConstraints = false

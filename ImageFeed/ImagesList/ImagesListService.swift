@@ -10,7 +10,9 @@ import Foundation
 final class ImagesListService {
     static let DidChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
     static let shared = ImagesListService()
+    
     private init(){}
+    
     private (set) var photos: [Photo] = []
     private var lastLoadedPage: Int?
     private var task: URLSessionTask?
@@ -32,21 +34,24 @@ final class ImagesListService {
         let request = imagesListRequest(storageToken.token!, page: String(page), perPage: perPage)
         let session = URLSession.shared
         let task = session.objectTask(for: request) { [weak self] (result: Result<[PhotoResult], Error>) in
-            guard let self = self else { return }
-            switch result {
-            case .success(let photoResults):
-                for photoResult in photoResults {
-                    self.photos.append(self.convert(photoResult))
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+                switch result {
+                case .success(let photoResults):
+                    for photoResult in photoResults {
+                        self.photos.append(self.convert(photoResult))
+                    }
+                    self.lastLoadedPage = page
+                    NotificationCenter.default
+                        .post(
+                            name: ImagesListService.DidChangeNotification,
+                            object: self,
+                            userInfo: ["Images" : self.photos]
+                        )
+                case .failure(let error):
+                    assertionFailure("Ошибка получения изображений \(error)")
                 }
-                self.lastLoadedPage = page
-                NotificationCenter.default
-                    .post(
-                        name: ImagesListService.DidChangeNotification,
-                        object: self,
-                        userInfo: ["Images" : self.photos]
-                    )
-            case .failure(let error):
-                assertionFailure("Ошибка получения изображений \(error)")
+                self.task = nil
             }
         }
         self.task = task

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class ImagesListCell: UITableViewCell {
     static let reuseIdentifier = "ImagesListCell"
@@ -14,6 +15,11 @@ final class ImagesListCell: UITableViewCell {
     @IBOutlet weak var likeButton: UIButton!
     @IBOutlet weak var gradientView: UIView!
     @IBOutlet weak var dateLabel: UILabel!
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        cellImage.kf.cancelDownloadTask()
+    }
 
     func configureGradient() {
         if !gradientInited {
@@ -21,7 +27,7 @@ final class ImagesListCell: UITableViewCell {
             gradient.frame = gradientView.bounds
             gradient.colors = [UIColor.clear.cgColor, UIColor(red: 26/255, green: 27/255, blue: 34/255, alpha: 0.2).cgColor]
             gradientView.layer.insertSublayer(gradient, at: 0)
-            gradientInited.toggle()
+            gradientInited = true
         }
     }
 }
