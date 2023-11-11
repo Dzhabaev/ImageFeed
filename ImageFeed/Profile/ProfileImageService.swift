@@ -17,6 +17,12 @@ final class ProfileImageService {
     private var task: URLSessionTask?
     private let storageToken = OAuth2TokenStorage.shared
     
+    func clean() {
+        avatarURL = nil
+        task?.cancel()
+        task = nil
+    }
+    
     func fetchProfileImageURL(username: String, _ completion: @escaping (Result<String, Error>) -> Void) {
         assert(Thread.isMainThread)
         

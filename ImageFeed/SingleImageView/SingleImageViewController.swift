@@ -61,19 +61,18 @@ class SingleImageViewController: UIViewController {
             preferredStyle: .alert
         )
         
-        let cancelAction = UIAlertAction(
+        alert.addAction(UIAlertAction(
             title: "Не надо",
             style: .cancel,
-            handler: nil
+            handler: nil)
         )
         
-        let repeatAction = UIAlertAction(
+        alert.addAction(UIAlertAction(
             title: "Повторить",
             style: .default) { [weak self ] _ in
                 self?.showFullImage()
             }
-        alert.addAction(cancelAction)
-        alert.addAction(repeatAction)
+        )
         
         present(alert, animated: true, completion: nil)
     }

@@ -7,6 +7,8 @@
 
 import UIKit
 import Kingfisher
+import WebKit
+import SwiftKeychainWrapper
 
 final class ProfileViewController: UIViewController {
     private let profileService = ProfileService.shared
@@ -15,9 +17,11 @@ final class ProfileViewController: UIViewController {
     private let nameLabel = UILabel()
     private let loginNameLabel = UILabel()
     private let descriptionLabel = UILabel()
-    private let logoutButton = UIButton.systemButton(with: UIImage(named: "exitButton")!,
-                                                     target: self,
-                                                     action: #selector(didTapLogoutButton))
+    private let logoutButton = UIButton.systemButton(
+        with: UIImage(named: "exitButton")!,
+        target: ProfileViewController.self,
+        action: #selector(didTapLogoutButton)
+    )
     private var profileImageServiceObserver: NSObjectProtocol?
     
     override func viewDidLoad() {
@@ -25,6 +29,10 @@ final class ProfileViewController: UIViewController {
         setupUI()
         updateProfileDetails(profile: profileService.profile)
         observeAvatarChanges()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         updateAvatar()
     }
     
@@ -50,7 +58,7 @@ final class ProfileViewController: UIViewController {
         loginNameLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(loginNameLabel)
         loginNameLabel.font = .systemFont(ofSize: 13)
-        loginNameLabel.textColor = UIColor(red: 174/255, green: 175/255, blue: 180/255, alpha: 1)
+        loginNameLabel.textColor = .ypGray
     }
     private func setupDescriptionLabel() {
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -72,7 +80,7 @@ final class ProfileViewController: UIViewController {
         view.addSubview(logoutButton)
         logoutButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
         logoutButton.widthAnchor.constraint(equalToConstant: 44).isActive = true
-        logoutButton.tintColor = UIColor(red: 245/255, green: 107/255, blue: 108/255, alpha: 1)
+        logoutButton.tintColor = .ypRed
     }
     private func setupConstraints() {
         NSLayoutConstraint.activate([
@@ -97,6 +105,47 @@ final class ProfileViewController: UIViewController {
     }
     
     @objc private func didTapLogoutButton() {
+        logoutAlert()
+    }
+    
+    private func logoutAlert() {
+        let alert = UIAlertController(
+            title: "Пока, пока!",
+            message: "Уверены что хотите выйти?",
+            preferredStyle: .alert
+        )
+        
+        alert.addAction(UIAlertAction(
+            title: "Да",
+            style: .default,
+            handler: { [ weak self ] action in
+                guard let self = self else { return }
+                self.clean()
+                self.goToSplashViewController()
+            })
+        )
+        
+        alert.addAction(UIAlertAction(
+            title: "Нет",
+            style: .cancel,
+            handler: nil)
+        )
+        
+        present(alert, animated: true, completion: nil)
+    }
+    
+    private func clean() {
+        KeychainWrapper.standard.removeAllKeys()
+        WebViewViewController.clean()
+        ImagesListService.shared.clean()
+        ProfileImageService.shared.clean()
+        ProfileService.shared.clean()
+    }
+    
+    private func goToSplashViewController() {
+        let viewController = SplashViewController()
+        guard let window = UIApplication.shared.windows.first else { fatalError("Invalid Configuration") }
+        window.rootViewController = viewController
     }
     
     @objc private func didTapLink(_ sender: UITapGestureRecognizer) {

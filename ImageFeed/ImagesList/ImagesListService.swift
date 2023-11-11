@@ -24,6 +24,13 @@ final class ImagesListService {
         self.photos = photos
     }
     
+    func clean(){
+        photos = []
+        lastLoadedPage = nil
+        task?.cancel()
+        task = nil
+    }
+    
     func fetchPhotosNextPage() {
         assert(Thread.isMainThread)
         guard task == nil else {
