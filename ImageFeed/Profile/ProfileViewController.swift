@@ -15,7 +15,7 @@ final class ProfileViewController: UIViewController {
     private let nameLabel = UILabel()
     private let loginNameLabel = UILabel()
     private let descriptionLabel = UILabel()
-    private let logoutButton = UIButton.systemButton(with: UIImage(named: "logout_button")!,
+    private let logoutButton = UIButton.systemButton(with: UIImage(named: "exitButton")!,
                                                      target: self,
                                                      action: #selector(didTapLogoutButton))
     private var profileImageServiceObserver: NSObjectProtocol?
@@ -143,7 +143,7 @@ extension ProfileViewController {
         let processor = RoundCornerImageProcessor(cornerRadius: 61)
         avatarImageView.kf.setImage(
             with: url,
-            placeholder: UIImage(named: "load_avatar"),
+            placeholder: UIImage(named: "loadAvatar"),
             options: [.processor(processor)]
         )
         let cache = ImageCache.default

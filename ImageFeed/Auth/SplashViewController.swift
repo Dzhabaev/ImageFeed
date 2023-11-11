@@ -14,7 +14,7 @@ final class SplashViewController: UIViewController {
     private func setupLogoImageView() {
         logoImageView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(logoImageView)
-        logoImageView.image = UIImage(named: "LogoLaunchScreen")
+        logoImageView.image = UIImage(named: "launchScreen")
         logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         logoImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
     }

@@ -61,7 +61,7 @@ final class AuthViewController: UIViewController {
         
         view.addSubview(authScreenLogo)
         authScreenLogo.translatesAutoresizingMaskIntoConstraints = false
-        authScreenLogo.image = UIImage(named: "auth_screen_logo")
+        authScreenLogo.image = UIImage(named: "authScreenLogo")
         
         NSLayoutConstraint.activate([
             signInButton.heightAnchor.constraint(equalToConstant: 48),

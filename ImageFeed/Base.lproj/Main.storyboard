@@ -4,6 +4,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22131"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -56,9 +57,13 @@
                                                 </imageView>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hZ0-6h-OwP" userLabel="Like Button">
                                                     <rect key="frame" x="354" y="4" width="44" height="44"/>
-                                                    <state key="normal" image="like_button_on"/>
+                                                    <color key="tintColor" name="ypRed "/>
+                                                    <state key="normal" image="likeButtonOff"/>
                                                     <state key="disabled" image="like_button_off"/>
                                                     <state key="selected" image="like_button_on"/>
+                                                    <connections>
+                                                        <action selector="likeButtonClicked" destination="SFz-1z-86V" eventType="touchUpInside" id="gAh-te-xY0"/>
+                                                    </connections>
                                                 </button>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oYF-CK-BfR" userLabel="Gradient">
                                                     <rect key="frame" x="16" y="407" width="382" height="30"/>
@@ -94,7 +99,7 @@
                                             <outlet property="cellImage" destination="h6I-cf-zbu" id="v3S-Bl-Bkh"/>
                                             <outlet property="dateLabel" destination="KRD-OT-DbK" id="6l4-14-YjH"/>
                                             <outlet property="gradientView" destination="oYF-CK-BfR" id="crt-Af-fp8"/>
-                                            <outlet property="likeButton" destination="hZ0-6h-OwP" id="IUH-Wm-BfU"/>
+                                            <outlet property="likeButton" destination="hZ0-6h-OwP" id="mTR-YD-Vpm"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -113,7 +118,7 @@
                             <constraint firstAttribute="bottom" secondItem="rLm-S7-vAa" secondAttribute="bottom" id="zgL-UN-mxE"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="" image="tab_editorial_active" id="oPM-1z-psS"/>
+                    <tabBarItem key="tabBarItem" title="" image="tabEditorialActive" id="oPM-1z-psS"/>
                     <navigationItem key="navigationItem" id="Ebv-2E-dw2"/>
                     <connections>
                         <outlet property="tableView" destination="rLm-S7-vAa" id="geH-qR-iDh"/>
@@ -158,7 +163,7 @@
                                     <constraint firstAttribute="width" constant="48" id="v2x-BG-WDY"/>
                                 </constraints>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" image="back_button_white"/>
+                                <state key="normal" image="backButtonWhite"/>
                                 <connections>
                                     <action selector="didTapBackButton:" destination="rhF-n3-ZVS" eventType="touchUpInside" id="1nm-7n-906"/>
                                 </connections>
@@ -166,7 +171,7 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XCT-jO-iKY" userLabel="Share Button">
                                 <rect key="frame" x="182" y="810" width="50" height="50"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" image="share_button"/>
+                                <state key="normal" image="shareButton"/>
                                 <connections>
                                     <action selector="didTapShareButton:" destination="rhF-n3-ZVS" eventType="touchUpInside" id="cMx-Qm-xlN"/>
                                 </connections>
@@ -198,10 +203,14 @@
     </scenes>
     <resources>
         <image name="0" width="200" height="132"/>
-        <image name="back_button_white" width="24" height="24"/>
+        <image name="backButtonWhite" width="24" height="24"/>
+        <image name="likeButtonOff" width="44" height="44"/>
         <image name="like_button_off" width="44" height="44"/>
         <image name="like_button_on" width="44" height="44"/>
-        <image name="share_button" width="50" height="50"/>
-        <image name="tab_editorial_active" width="20" height="22"/>
+        <image name="shareButton" width="50" height="50"/>
+        <image name="tabEditorialActive" width="20" height="22"/>
+        <namedColor name="ypRed ">
+            <color red="0.96100002527236938" green="0.41999998688697815" blue="0.42399999499320984" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
     </resources>
 </document>

@@ -8,9 +8,14 @@
 import UIKit
 import Kingfisher
 
+protocol ImagesListCellDelegate: AnyObject {
+    func imageListCellDidTapLike(_ cell: ImagesListCell)
+}
+
 final class ImagesListCell: UITableViewCell {
     static let reuseIdentifier = "ImagesListCell"
     private var gradientInited = false
+    weak var delegate: ImagesListCellDelegate?
     @IBOutlet weak var cellImage: UIImageView!
     @IBOutlet weak var likeButton: UIButton!
     @IBOutlet weak var gradientView: UIView!
@@ -29,5 +34,15 @@ final class ImagesListCell: UITableViewCell {
             gradientView.layer.insertSublayer(gradient, at: 0)
             gradientInited = true
         }
+    }
+    
+    func setIsLiked(isLiked: Bool){
+        let like = isLiked ? UIImage(named: "likeButtonOn") : UIImage(named: "likeButtonOff")
+        likeButton.imageView?.image = like
+        likeButton.setImage(like, for: .normal)
+    }
+    
+    @IBAction private func likeButtonClicked() {
+        delegate?.imageListCellDidTapLike(self)
     }
 }
