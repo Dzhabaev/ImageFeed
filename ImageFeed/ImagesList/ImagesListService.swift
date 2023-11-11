@@ -77,6 +77,7 @@ final class ImagesListService {
             welcomeDescription: photoResult.description,
             thumbImageURL: (photoResult.urls?.thumb)!,
             largeImageURL: (photoResult.urls?.full)!,
+            fullImageURL: (photoResult.urls?.full)!,
             isLiked: photoResult.isLiked ?? false)
     }
     
@@ -108,6 +109,7 @@ final class ImagesListService {
                                          welcomeDescription: photo.welcomeDescription,
                                          thumbImageURL: photo.thumbImageURL,
                                          largeImageURL: photo.largeImageURL,
+                                         fullImageURL: photo.fullImageURL,
                                          isLiked: isLiked)
                     self.photos = self.photos.withReplaced(itemAt: index, newValue: newPhoto)
                 }

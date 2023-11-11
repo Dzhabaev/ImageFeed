@@ -9,10 +9,10 @@ import UIKit
 import Kingfisher
 
 class SingleImageViewController: UIViewController {
-    var imageURL: URL? {
+    var fullImageURL: URL? {
         didSet {
             guard isViewLoaded else { return }
-            setImage()
+            showFullImage()
         }
     }
     
@@ -21,7 +21,7 @@ class SingleImageViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setImage()
+        showFullImage()
         scrollView.minimumZoomScale = 0.1
         scrollView.maximumZoomScale = 1.25
     }
@@ -40,18 +40,42 @@ class SingleImageViewController: UIViewController {
     
     // MARK: - Private Methods
     
-    private func setImage() {
+    private func showFullImage() {
         UIBlockingProgressHUD.show()
-        imageView.kf.setImage(with: imageURL) { [weak self] result in
+        imageView.kf.setImage(with: fullImageURL) { [weak self] result in
+            UIBlockingProgressHUD.dismiss()
             guard let self = self else { return }
             switch result {
             case .success(let imageResult):
                 self.rescaleAndCenterImageInScrollView(image: imageResult.image)
-            case .failure(let error):
-                print("Ошибка загрузки картинки: \(error)")
+            case .failure:
+                self.showError()
             }
-            UIBlockingProgressHUD.dismiss()
         }
+    }
+    
+    private func showError() {
+        let alert = UIAlertController(
+            title: "Ошибка",
+            message: "Что-то пошло не так. Попробовать ещё раз?",
+            preferredStyle: .alert
+        )
+        
+        let cancelAction = UIAlertAction(
+            title: "Не надо",
+            style: .cancel,
+            handler: nil
+        )
+        
+        let repeatAction = UIAlertAction(
+            title: "Повторить",
+            style: .default) { [weak self ] _ in
+                self?.showFullImage()
+            }
+        alert.addAction(cancelAction)
+        alert.addAction(repeatAction)
+        
+        present(alert, animated: true, completion: nil)
     }
     
     private func rescaleAndCenterImageInScrollView(image: UIImage?) {
@@ -77,6 +101,6 @@ class SingleImageViewController: UIViewController {
 
 extension SingleImageViewController: UIScrollViewDelegate {
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        imageView
+        return imageView
     }
 }

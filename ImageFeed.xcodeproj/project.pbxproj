@@ -553,7 +553,7 @@
 			repositoryURL = "https://github.com/relatedcode/ProgressHUD";
 			requirement = {
 				kind = exactVersion;
-				version = 13.8.6;
+				version = 13.8.4;
 			};
 		};
 		722FD4EE2AF798B300B0155D /* XCRemoteSwiftPackageReference "SwiftKeychainWrapper" */ = {
