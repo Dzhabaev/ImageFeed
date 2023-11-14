@@ -103,7 +103,11 @@ extension ImagesListViewController {
             cell.cellImage.kf.indicatorType = .none
         }
         cell.configureGradient()
-        cell.dateLabel.text = dateFormatter.string(from: Date())
+        if let date = imagesListService.photos[indexPath.row].createdAt {
+            cell.dateLabel.text = dateFormatter.string(from: date)
+        } else {
+            cell.dateLabel.text = "Date unknown"
+        }
         let isLiked = imagesListService.photos[indexPath.row].isLiked == false
         let like = isLiked ? UIImage(named: "likeButtonOff") : UIImage(named: "likeButtonOn")
         cell.likeButton.setImage(like, for: .normal)
