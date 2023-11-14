@@ -19,7 +19,7 @@ final class ProfileViewController: UIViewController {
     private let descriptionLabel = UILabel()
     private let logoutButton = UIButton.systemButton(
         with: UIImage(named: "exitButton")!,
-        target: ProfileViewController.self,
+        target: self,
         action: #selector(didTapLogoutButton)
     )
     private var profileImageServiceObserver: NSObjectProtocol?
