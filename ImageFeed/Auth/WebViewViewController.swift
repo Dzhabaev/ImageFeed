@@ -9,32 +9,31 @@ import UIKit
 import WebKit
 
 // MARK: - WebViewViewControllerDelegate
-
 protocol WebViewViewControllerDelegate: AnyObject {
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String)
     func webViewViewControllerDidCancel(_ vc: WebViewViewController)
 }
 
 // MARK: - WebViewViewController
-
 final class WebViewViewController: UIViewController {
+    
+    // MARK: - UI Elements
     private var webView: WKWebView!
     private var progressView: UIProgressView!
     private var backButton: UIButton!
     
+    //MARK: - Properties
     weak var delegate: WebViewViewControllerDelegate?
     private var estimatedProgressObservation: NSKeyValueObservation?
     
+    // MARK: - View Life Cycles
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .ypBlack
         setupUI()
         webView.navigationDelegate = self
         loadWebView()
         updateProgress()
-    }
-    
-    @objc private func didTapBackButton() {
-        delegate?.webViewViewControllerDidCancel(self)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -47,6 +46,13 @@ final class WebViewViewController: UIViewController {
                  self.updateProgress()
              })
     }
+    
+    // MARK: - Action Methods
+    @objc private func didTapBackButton() {
+        delegate?.webViewViewControllerDidCancel(self)
+    }
+    
+    // MARK: - UI Setup Methods
     private func setupUI() {
         webView = WKWebView()
         view.addSubview(webView)
@@ -84,8 +90,7 @@ final class WebViewViewController: UIViewController {
     }
 }
 
-// MARK: - Private Methods
-
+// MARK: - Load Web View Extension
 private extension WebViewViewController {
     func loadWebView() {
         var urlComponents = URLComponents(string: Constants.authorizeURL)!
@@ -102,7 +107,6 @@ private extension WebViewViewController {
 }
 
 // MARK: - WKNavigationDelegate
-
 extension WebViewViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView,
                  decidePolicyFor navigationAction: WKNavigationAction,

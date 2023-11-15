@@ -5,26 +5,27 @@
 //  Created by Chingiz on 02.10.2023.
 //
 
-import UIKit
 import ProgressHUD
+import UIKit
 
 final class SplashViewController: UIViewController {
-    private let logoImageView = UIImageView()
     
-    private func setupLogoImageView() {
+    // MARK: - UI Elements
+    private let logoImageView: UIImageView = {
+        let logoImageView = UIImageView()
         logoImageView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(logoImageView)
         logoImageView.image = UIImage(named: "launchScreen")
-        logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        logoImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-    }
+        return logoImageView
+    }()
     
+    // MARK: - Private Properties
     private let profileService = ProfileService.shared
     private let profileImageService = ProfileImageService.shared
+    private let oauth2TokenStorage = OAuth2TokenStorage.shared
     private let ShowAuthenticationScreenSegueIdentifier = "ShowAuthenticationScreen"
     private let oauth2Service = OAuth2Service()
-    private let oauth2TokenStorage = OAuth2TokenStorage.shared
     
+    // MARK: - View Life Cycles
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
@@ -42,7 +43,8 @@ final class SplashViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         view.backgroundColor = .ypBlack
-        setupLogoImageView()
+        view.addSubview(logoImageView)
+        applyConstraints()
         setNeedsStatusBarAppearanceUpdate()
     }
     
@@ -50,11 +52,19 @@ final class SplashViewController: UIViewController {
         .lightContent
     }
     
+    // MARK: - Public Methods
     func switchToTabBarController() {
         guard let window = UIApplication.shared.windows.first else { fatalError("Invalid Configuration") }
-        let tabBarController = UIStoryboard(name: "Main", bundle: .main)
-            .instantiateViewController(withIdentifier: "TabBarViewController")
+        let tabBarController = TabBarController()
         window.rootViewController = tabBarController
+    }
+    
+    // MARK: - Private Methods
+    private func applyConstraints() {
+        NSLayoutConstraint.activate([
+        logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+        logoImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
     }
 }
 

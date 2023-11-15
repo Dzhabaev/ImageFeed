@@ -8,11 +8,18 @@
 import Foundation
 
 final class ImagesListService {
-    static let DidChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
+    
+    // MARK: - Singleton Instance
     static let shared = ImagesListService()
     
+    // MARK: - Notifications
+    static let DidChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
+    
+    
+    // MARK: - Initializers
     private init(){}
     
+    // MARK: - Private Properties
     private (set) var photos: [Photo] = []
     private var lastLoadedPage: Int?
     private var task: URLSessionTask?
@@ -20,6 +27,7 @@ final class ImagesListService {
     private let perPage = "10"
     private let dateFormatter = ISO8601DateFormatter()
     
+    // MARK: - Public Methods
     func updatePhotos(_ photos: [Photo]) {
         self.photos = photos
     }
@@ -65,29 +73,6 @@ final class ImagesListService {
         task.resume()
     }
     
-    private func imagesListRequest(_ token: String, page: String, perPage: String) -> URLRequest {
-        var request = URLRequest.makeHTTPRequest(
-            path: "/photos?page=\(page)&&per_page=\(perPage)",
-            httpMethod: "GET",
-            baseURL: Constants.apiBaseURL
-        )
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        return request
-    }
-    
-    private func convert(_ photoResult: PhotoResult) -> Photo {
-        return Photo.init(
-            id: photoResult.id,
-            width: CGFloat(photoResult.width),
-            height: CGFloat(photoResult.height),
-            createdAt: self.dateFormatter.date(from:photoResult.createdAt),
-            welcomeDescription: photoResult.description,
-            thumbImageURL: (photoResult.urls?.thumb)!,
-            largeImageURL: (photoResult.urls?.full)!,
-            fullImageURL: (photoResult.urls?.full)!,
-            isLiked: photoResult.isLiked ?? false)
-    }
-    
     func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void){
         assert(Thread.isMainThread)
         task?.cancel()
@@ -129,6 +114,30 @@ final class ImagesListService {
         task.resume()
     }
     
+    // MARK: - Private Methods
+    private func imagesListRequest(_ token: String, page: String, perPage: String) -> URLRequest {
+        var request = URLRequest.makeHTTPRequest(
+            path: "/photos?page=\(page)&&per_page=\(perPage)",
+            httpMethod: "GET",
+            baseURL: Constants.apiBaseURL
+        )
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        return request
+    }
+    
+    private func convert(_ photoResult: PhotoResult) -> Photo {
+        return Photo.init(
+            id: photoResult.id,
+            width: CGFloat(photoResult.width),
+            height: CGFloat(photoResult.height),
+            createdAt: self.dateFormatter.date(from:photoResult.createdAt),
+            welcomeDescription: photoResult.description,
+            thumbImageURL: (photoResult.urls?.thumb)!,
+            largeImageURL: (photoResult.urls?.full)!,
+            fullImageURL: (photoResult.urls?.full)!,
+            isLiked: photoResult.isLiked ?? false)
+    }
+    
     private func makeLikeRequest(_ token: String, photoId: String, httpMethod: String) -> URLRequest? {
         var request = URLRequest.makeHTTPRequest(
             path: "photos/\(photoId)/like",
@@ -139,19 +148,11 @@ final class ImagesListService {
         return request
     }
     
-    func postLikeRequest(_ token: String, photoId: String) -> URLRequest? {
+    private func postLikeRequest(_ token: String, photoId: String) -> URLRequest? {
         return makeLikeRequest(token, photoId: photoId, httpMethod: "POST")
     }
     
-    func deleteLikeRequest(_ token: String, photoId: String) -> URLRequest? {
+    private func deleteLikeRequest(_ token: String, photoId: String) -> URLRequest? {
         return makeLikeRequest(token, photoId: photoId, httpMethod: "DELETE")
-    }
-}
-
-extension Array {
-    func withReplaced(itemAt: Int, newValue: Photo) -> [Photo] {
-        var photos = ImagesListService.shared.photos
-        photos.replaceSubrange(itemAt...itemAt, with: [newValue])
-        return photos
     }
 }

@@ -10,19 +10,26 @@ import UIKit
 
 final class ProfileImageService {
     
+    // MARK: - Singleton Instance
     static let shared = ProfileImageService()
+    
+    // MARK: - Notification
     static let DidChangeNotification = Notification.Name(rawValue: "ProfileImageProviderDidChange")
-    private (set) var avatarURL: String?
+    
+    // MARK: - Private Properties
+    private let storageToken = OAuth2TokenStorage.shared
     private let urlSession = URLSession.shared
     private var task: URLSessionTask?
-    private let storageToken = OAuth2TokenStorage.shared
+    private (set) var avatarURL: String?
     
+    // MARK: - Clean Up
     func clean() {
         avatarURL = nil
         task?.cancel()
         task = nil
     }
     
+    // MARK: - Fetch Profile Image URL
     func fetchProfileImageURL(username: String, _ completion: @escaping (Result<String, Error>) -> Void) {
         assert(Thread.isMainThread)
         
@@ -48,27 +55,12 @@ final class ProfileImageService {
         self.task = task
         task.resume()
     }
-
+    
+    // MARK: - Helper Methods
     private func makeRequest(token: String, username: String) -> URLRequest {
         guard let url = URL(string: "\(Constants.apiBaseURL)" + "/users/" + username) else { fatalError("Failed to create URL") }
         var request = URLRequest(url: url)
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
-    }
-}
-
-struct UserResult: Codable {
-    let profileImage: [String: String]
-    
-    enum CodingKeys: String, CodingKey {
-        case profileImage = "profile_image"
-    }
-}
-
-struct ProfileImage: Codable {
-    let profileImage: [String: String]
-    
-    init(decodedData: UserResult) {
-        self.profileImage = decodedData.profileImage
     }
 }

@@ -5,10 +5,16 @@
 //  Created by Чингиз Джабаев on 13.09.2023.
 //
 
-import UIKit
 import Kingfisher
+import UIKit
 
-class SingleImageViewController: UIViewController {
+final class SingleImageViewController: UIViewController {
+    
+    // MARK: - IB Outlets
+    @IBOutlet var imageView: UIImageView!
+    @IBOutlet weak var scrollView: UIScrollView!
+    
+    // MARK: - Public Properties
     var fullImageURL: URL? {
         didSet {
             guard isViewLoaded else { return }
@@ -16,9 +22,7 @@ class SingleImageViewController: UIViewController {
         }
     }
     
-    @IBOutlet var imageView: UIImageView!
-    @IBOutlet weak var scrollView: UIScrollView!
-    
+    // MARK: - View Life Cycles
     override func viewDidLoad() {
         super.viewDidLoad()
         showFullImage()
@@ -60,20 +64,17 @@ class SingleImageViewController: UIViewController {
             message: "Что-то пошло не так. Попробовать ещё раз?",
             preferredStyle: .alert
         )
-        
         alert.addAction(UIAlertAction(
             title: "Не надо",
             style: .cancel,
             handler: nil)
         )
-        
         alert.addAction(UIAlertAction(
             title: "Повторить",
             style: .default) { [weak self ] _ in
                 self?.showFullImage()
             }
         )
-        
         present(alert, animated: true, completion: nil)
     }
     
@@ -98,6 +99,7 @@ class SingleImageViewController: UIViewController {
     }
 }
 
+//MARK: - UIScrollViewDelegate
 extension SingleImageViewController: UIScrollViewDelegate {
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return imageView

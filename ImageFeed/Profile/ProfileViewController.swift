@@ -5,30 +5,81 @@
 //  Created by Чингиз Джабаев on 11.09.2023.
 //
 
-import UIKit
 import Kingfisher
-import WebKit
 import SwiftKeychainWrapper
+import UIKit
+import WebKit
 
 final class ProfileViewController: UIViewController {
+    
+    //MARK: - Private Properties
     private let profileService = ProfileService.shared
     private let tokenStorage = OAuth2TokenStorage.shared
-    private let avatarImageView = UIImageView()
-    private let nameLabel = UILabel()
-    private let loginNameLabel = UILabel()
-    private let descriptionLabel = UILabel()
-    private let logoutButton = UIButton.systemButton(
-        with: UIImage(named: "exitButton")!,
-        target: self,
-        action: #selector(didTapLogoutButton)
-    )
     private var profileImageServiceObserver: NSObjectProtocol?
     
+    // MARK: - UI Elements
+    private let avatarImageView: UIImageView = {
+        let avatarImageView = UIImageView()
+        avatarImageView.translatesAutoresizingMaskIntoConstraints = false
+        return avatarImageView
+    }()
+    
+    private let nameLabel: UILabel = {
+        let nameLabel = UILabel()
+        nameLabel.translatesAutoresizingMaskIntoConstraints = false
+        nameLabel.font = .boldSystemFont(ofSize: 23)
+        nameLabel.textColor = .white
+        return nameLabel
+    }()
+    
+    private let loginNameLabel: UILabel = {
+        let loginNameLabel = UILabel()
+        loginNameLabel.translatesAutoresizingMaskIntoConstraints = false
+        loginNameLabel.font = .systemFont(ofSize: 13)
+        loginNameLabel.textColor = .ypGray
+        return loginNameLabel
+    }()
+    
+    private let descriptionLabel: UILabel = {
+        let descriptionLabel = UILabel()
+        descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        descriptionLabel.font = .systemFont(ofSize: 13)
+        descriptionLabel.textColor = .white
+        descriptionLabel.numberOfLines = 0
+        descriptionLabel.lineBreakMode = .byWordWrapping
+        descriptionLabel.isUserInteractionEnabled = true
+        let attributedString = NSMutableAttributedString(string: "To fill out a Bio, go to the website https://unsplash.com/ and edit the profile in the Bio section and then don’t forget to click the 'Update account' button at the bottom.")
+        attributedString.addAttribute(.link, value: "https://unsplash.com/", range: NSMakeRange(31, 18))
+        descriptionLabel.attributedText = attributedString
+        let tapGesture = UITapGestureRecognizer(
+            target: self,
+            action: #selector(didTapLink(_:))
+        )
+        descriptionLabel.addGestureRecognizer(tapGesture)
+        return descriptionLabel
+    }()
+    
+    private let logoutButton: UIButton = {
+        let logoutButton = UIButton.systemButton(
+            with: UIImage(named: "exitButton")!,
+            target: self,
+            action: #selector(didTapLogoutButton)
+        )
+        logoutButton.translatesAutoresizingMaskIntoConstraints = false
+        logoutButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
+        logoutButton.widthAnchor.constraint(equalToConstant: 44).isActive = true
+        logoutButton.tintColor = .ypRed
+        return logoutButton
+    }()
+    
+    // MARK: - View Life Cycles
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupUI()
+        addSubview()
+        applyConstraints()
         updateProfileDetails(profile: profileService.profile)
         observeAvatarChanges()
+        view.backgroundColor = .ypBlack
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -36,53 +87,27 @@ final class ProfileViewController: UIViewController {
         updateAvatar()
     }
     
-    private func setupUI() {
-        setupAvatarImageView()
-        setupNameLabel()
-        setupLoginNameLabel()
-        setupDescriptionLabel()
-        setupLogoutButton()
-        setupConstraints()
+    // MARK: - Action Methods
+    @objc private func didTapLogoutButton() {
+        logoutAlert()
     }
-    private func setupAvatarImageView() {
-        avatarImageView.translatesAutoresizingMaskIntoConstraints = false
+    
+    @objc private func didTapLink(_ sender: UITapGestureRecognizer) {
+        if let url = URL(string: "https://unsplash.com/account/") {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
+    }
+    
+    // MARK: - UI Setup Methods
+    private func addSubview() {
         view.addSubview(avatarImageView)
-    }
-    private func setupNameLabel() {
-        nameLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(nameLabel)
-        nameLabel.font = .boldSystemFont(ofSize: 23)
-        nameLabel.textColor = .white
-    }
-    private func setupLoginNameLabel() {
-        loginNameLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(loginNameLabel)
-        loginNameLabel.font = .systemFont(ofSize: 13)
-        loginNameLabel.textColor = .ypGray
-    }
-    private func setupDescriptionLabel() {
-        descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(descriptionLabel)
-        descriptionLabel.font = .systemFont(ofSize: 13)
-        descriptionLabel.textColor = .white
-        descriptionLabel.numberOfLines = 0
-        descriptionLabel.lineBreakMode = .byWordWrapping
-        descriptionLabel.isUserInteractionEnabled = true
-        
-        let attributedString = NSMutableAttributedString(string: "To fill out a Bio, go to the website https://unsplash.com/ and edit the profile in the Bio section and then don’t forget to click the 'Update account' button at the bottom.")
-        attributedString.addAttribute(.link, value: "https://unsplash.com/", range: NSMakeRange(31, 18))
-        descriptionLabel.attributedText = attributedString
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapLink(_:)))
-        descriptionLabel.addGestureRecognizer(tapGesture)
-    }
-    private func setupLogoutButton() {
-        logoutButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(logoutButton)
-        logoutButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
-        logoutButton.widthAnchor.constraint(equalToConstant: 44).isActive = true
-        logoutButton.tintColor = .ypRed
     }
-    private func setupConstraints() {
+    
+    private func applyConstraints() {
         NSLayoutConstraint.activate([
             avatarImageView.widthAnchor.constraint(equalToConstant: 70),
             avatarImageView.heightAnchor.constraint(equalToConstant: 70),
@@ -104,10 +129,7 @@ final class ProfileViewController: UIViewController {
         ])
     }
     
-    @objc private func didTapLogoutButton() {
-        logoutAlert()
-    }
-    
+    // MARK: - Logout
     private func logoutAlert() {
         let alert = UIAlertController(
             title: "Пока, пока!",
@@ -147,14 +169,9 @@ final class ProfileViewController: UIViewController {
         guard let window = UIApplication.shared.windows.first else { fatalError("Invalid Configuration") }
         window.rootViewController = viewController
     }
-    
-    @objc private func didTapLink(_ sender: UITapGestureRecognizer) {
-        if let url = URL(string: "https://unsplash.com/account/") {
-            UIApplication.shared.open(url, options: [:], completionHandler: nil)
-        }
-    }
 }
 
+// MARK: - Profile Extension
 extension ProfileViewController {
     private func updateProfileDetails(profile: Profile?) {
         guard let profile = profileService.profile else {return}

@@ -5,8 +5,8 @@
 //  Created by Chingiz on 23.10.2023.
 //
 
-import UIKit
 import ProgressHUD
+import UIKit
 
 final class UIBlockingProgressHUD {
     private static var window: UIWindow? {

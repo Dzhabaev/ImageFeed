@@ -8,17 +8,23 @@
 import Foundation
 
 final class ProfileService {
+    
+    // MARK: - Singleton Instance
     static let shared = ProfileService()
-    private(set) var profile: Profile?
+    
+    // MARK: - Private Properties
     private let urlSession = URLSession.shared
     private var task: URLSessionTask?
+    private(set) var profile: Profile?
     
+    // MARK: - Clean Up
     func clean() {
         profile = nil
         task?.cancel()
         task = nil
     }
     
+    // MARK: - Fetch Profile
     func fetchProfile(_ token: String, completion: @escaping (Result<Profile, Error>) -> Void) {
         assert(Thread.isMainThread)
         
@@ -39,6 +45,7 @@ final class ProfileService {
     }
 }
 
+// MARK: - ProfileService Extension
 extension ProfileService {
     private func makeRequest(token: String) -> URLRequest {
         guard let url = URL(string: "\(Constants.apiBaseURL)" + "/me") else { fatalError("Failed to create URL") }
