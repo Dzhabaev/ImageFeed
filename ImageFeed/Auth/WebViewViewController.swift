@@ -100,6 +100,7 @@ final class WebViewViewController: UIViewController & WebViewViewControllerProto
         ])
     }
     
+    // MARK: - Methods
     func load(request: URLRequest) {
         webView.load(request)
     }

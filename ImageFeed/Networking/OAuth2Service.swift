@@ -54,15 +54,17 @@ final class OAuth2Service {
 // MARK: - Auth Token Request Extension
 extension OAuth2Service {
     private func authTokenRequest(code: String) -> URLRequest {
-        URLRequest.makeHTTPRequest(
+        let configuration = AuthConfiguration.standard
+        let baseURL = configuration.baseURL
+        return URLRequest.makeHTTPRequest(
             path: "/oauth/token"
-            + "?client_id=\(Constants.accessKey)"
-            + "&&client_secret=\(Constants.secretKey)"
-            + "&&redirect_uri=\(Constants.redirectURI)"
+            + "?client_id=\(configuration.accessKey)"
+            + "&&client_secret=\(configuration.secretKey)"
+            + "&&redirect_uri=\(configuration.redirectURI)"
             + "&&code=\(code)"
             + "&&grant_type=authorization_code",
             httpMethod: "POST",
-            baseURL: URL(string: "https://unsplash.com")!
+            baseURL: baseURL
         )
     }
 }

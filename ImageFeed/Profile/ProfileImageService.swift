@@ -58,7 +58,7 @@ final class ProfileImageService {
     
     // MARK: - Helper Methods
     private func makeRequest(token: String, username: String) -> URLRequest {
-        guard let url = URL(string: "\(Constants.apiBaseURL)" + "/users/" + username) else { fatalError("Failed to create URL") }
+        guard let url = URL(string: "\(AuthConfiguration.standard.apiBaseURL)" + "/users/" + username) else { fatalError("Failed to create URL") }
         var request = URLRequest(url: url)
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request

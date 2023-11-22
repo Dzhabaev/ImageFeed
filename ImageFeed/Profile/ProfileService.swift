@@ -48,7 +48,7 @@ final class ProfileService {
 // MARK: - ProfileService Extension
 extension ProfileService {
     private func makeRequest(token: String) -> URLRequest {
-        guard let url = URL(string: "\(Constants.apiBaseURL)" + "/me") else { fatalError("Failed to create URL") }
+        guard let url = URL(string: "\(AuthConfiguration.standard.apiBaseURL)" + "/me") else { fatalError("Failed to create URL") }
         var request = URLRequest(url: url)
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
