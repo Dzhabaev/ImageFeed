@@ -5,17 +5,22 @@
 //  Created by Чингиз Джабаев on 11.09.2023.
 //
 
-import Kingfisher
-import SwiftKeychainWrapper
 import UIKit
-import WebKit
 
-final class ProfileViewController: UIViewController {
+// MARK: - ProfileViewControllerProtocol
+public protocol ProfileViewControllerProtocol: AnyObject {
+    var presenter: ProfilePresenterProtocol? { get set }
+    func setName(_ name: String)
+    func setLoginName(_ loginName: String)
+    func setDescription(_ description: String)
+    func setAvatarImage(_ image: UIImage?)
+}
+
+// MARK: - ProfileViewController
+final class ProfileViewController: UIViewController & ProfileViewControllerProtocol {
     
-    //MARK: - Private Properties
-    private let profileService = ProfileService.shared
-    private let tokenStorage = OAuth2TokenStorage.shared
-    private var profileImageServiceObserver: NSObjectProtocol?
+    //MARK: - Properties
+    var presenter: ProfilePresenterProtocol?
     
     // MARK: - UI Elements
     private let avatarImageView: UIImageView = {
@@ -77,19 +82,18 @@ final class ProfileViewController: UIViewController {
         super.viewDidLoad()
         addSubview()
         applyConstraints()
-        updateProfileDetails(profile: profileService.profile)
-        observeAvatarChanges()
+        presenter?.viewDidLoad()
         view.backgroundColor = .ypBlack
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        updateAvatar()
+        presenter?.updateAvatar()
     }
     
     // MARK: - Action Methods
     @objc private func didTapLogoutButton() {
-        logoutAlert()
+        logoutAction()
     }
     
     @objc private func didTapLink(_ sender: UITapGestureRecognizer) {
@@ -129,8 +133,25 @@ final class ProfileViewController: UIViewController {
         ])
     }
     
+    // MARK: - Methods
+    func setName(_ name: String) {
+        nameLabel.text = name
+    }
+    
+    func setLoginName(_ loginName: String) {
+        loginNameLabel.text = loginName
+    }
+    
+    func setDescription(_ description: String) {
+        descriptionLabel.text = description
+    }
+    
+    func setAvatarImage(_ image: UIImage?) {
+        avatarImageView.image = image
+    }
+    
     // MARK: - Logout
-    private func logoutAlert() {
+    private func logoutAction() {
         let alert = UIAlertController(
             title: "Пока, пока!",
             message: "Уверены что хотите выйти?",
@@ -142,7 +163,7 @@ final class ProfileViewController: UIViewController {
             style: .default,
             handler: { [ weak self ] action in
                 guard let self = self else { return }
-                self.clean()
+                self.presenter?.clean()
                 self.goToSplashViewController()
             })
         )
@@ -156,64 +177,9 @@ final class ProfileViewController: UIViewController {
         present(alert, animated: true, completion: nil)
     }
     
-    private func clean() {
-        KeychainWrapper.standard.removeAllKeys()
-        WebViewViewController.clean()
-        ImagesListService.shared.clean()
-        ProfileImageService.shared.clean()
-        ProfileService.shared.clean()
-    }
-    
     private func goToSplashViewController() {
         let viewController = SplashViewController()
         guard let window = UIApplication.shared.windows.first else { fatalError("Invalid Configuration") }
         window.rootViewController = viewController
-    }
-}
-
-// MARK: - Profile Extension
-extension ProfileViewController {
-    private func updateProfileDetails(profile: Profile?) {
-        guard let profile = profileService.profile else {return}
-        nameLabel.text = profile.name
-        loginNameLabel.text = profile.loginName
-        if let bio = profile.bio, !bio.isEmpty {
-            descriptionLabel.text = bio
-        } else {
-            descriptionLabel.text = "To fill out a Bio, go to the website 'https://unsplash.com/' and edit the profile in the 'Bio' section and then don’t forget to click the 'Update account' button at the bottom."
-        }
-    }
-    
-    private func observeAvatarChanges(){
-        profileImageServiceObserver = NotificationCenter.default
-            .addObserver(
-                forName: ProfileImageService.DidChangeNotification,
-                object: nil,
-                queue: .main
-            ){
-                [weak self] _ in
-                guard let self = self else {return}
-                self.updateAvatar()
-            }
-        updateAvatar()
-    }
-    
-    private func updateAvatar() {
-        guard
-            let profileImageURL = ProfileImageService.shared.avatarURL,
-            let url = URL(string: profileImageURL)
-        else {
-            return
-        }
-        avatarImageView.kf.indicatorType = .activity
-        let processor = RoundCornerImageProcessor(cornerRadius: 61)
-        avatarImageView.kf.setImage(
-            with: url,
-            placeholder: UIImage(named: "loadAvatar"),
-            options: [.processor(processor)]
-        )
-        let cache = ImageCache.default
-        cache.clearDiskCache()
-        cache.clearMemoryCache()
     }
 }
