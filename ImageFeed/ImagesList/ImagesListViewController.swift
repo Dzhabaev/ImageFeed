@@ -8,7 +8,16 @@
 import Kingfisher
 import UIKit
 
-final class ImagesListViewController: UIViewController {
+protocol ImagesListViewControllerProtocol: AnyObject {
+    var presenter: ImagesListPresenterProtocol? {get set}
+    func updateTableViewAnimated()
+    var photos: [Photo] {get set}
+}
+
+final class ImagesListViewController: UIViewController & ImagesListViewControllerProtocol {
+    var presenter: ImagesListPresenterProtocol? = {
+        return ImageListPresenter()
+    } ()
     
     // MARK: - IB Outlets
     @IBOutlet private var tableView: UITableView!
@@ -22,8 +31,8 @@ final class ImagesListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.setNavigationBarHidden(true, animated: false)
-        setupObservers()
-        imagesListService.fetchPhotosNextPage()
+        presenter?.view = self
+        presenter?.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
     }
@@ -40,7 +49,7 @@ final class ImagesListViewController: UIViewController {
     }
     
     // MARK: - Action Methods
-    @objc private func updateTableViewAnimated() {
+    @objc func updateTableViewAnimated() {
         let oldCount = photos.count
         let newCount = imagesListService.photos.count
         photos = imagesListService.photos
@@ -60,18 +69,10 @@ final class ImagesListViewController: UIViewController {
     // MARK: - Methods
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if indexPath.row + 1 == imagesListService.photos.count {
-            imagesListService.fetchPhotosNextPage()
+            presenter?.fetchPhotosNextPage()
         } else {
             return
         }
-    }
-    
-    private func setupObservers() {
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(updateTableViewAnimated),
-            name: ImagesListService.DidChangeNotification,
-            object: nil)
     }
     
     private let dateFormatter: DateFormatter = {
@@ -146,11 +147,12 @@ extension ImagesListViewController: ImagesListCellDelegate {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
         let photo = photos[indexPath.row]
         UIBlockingProgressHUD.show()
-        imagesListService.changeLike(photoId: photo.id, isLike: photo.isLiked) {result in
+        presenter?.setLike(photoId: photo.id, isLike: photo.isLiked) {result in
             DispatchQueue.main.async {
                 switch result {
                 case .success:
-                    self.photos = self.imagesListService.photos
+                    guard let newPhotos = self.presenter?.imagesListService.photos else {return}
+                    self.photos = newPhotos
                     cell.setIsLiked(isLiked: self.photos[indexPath.row].isLiked)
                     UIBlockingProgressHUD.dismiss()
                 case .failure(let error):
