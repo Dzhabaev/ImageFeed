@@ -6,9 +6,9 @@
 //
 
 @testable import ImageFeed
-import XCTest
-import UIKit
 import Foundation
+import UIKit
+import XCTest
 
 final class ImagesListTests: XCTestCase {
     

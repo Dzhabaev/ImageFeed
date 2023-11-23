@@ -16,16 +16,20 @@ final class TabBarController: UITabBarController {
         guard let imagesListViewController = storyboard.instantiateViewController(withIdentifier: "ImagesListViewController") as? ImagesListViewController else {
             fatalError("Unable to instantiate ImagesListViewController from the storyboard")
         }
-       
-        imagesListViewController.tabBarItem = UITabBarItem(
-            title: nil,
-            image: UIImage(named: "tabEditorialActive"),
-            selectedImage: nil)
+        
+        let imageListPresenter = ImageListPresenter()
+        imagesListViewController.presenter = imageListPresenter
+        imageListPresenter.view = imagesListViewController
         
         let profileViewController = ProfileViewController()
         let profilePresenter = ProfilePresenter(view: profileViewController)
         profileViewController.presenter = profilePresenter
         profilePresenter.view = profileViewController
+        
+        imagesListViewController.tabBarItem = UITabBarItem(
+            title: nil,
+            image: UIImage(named: "tabEditorialActive"),
+            selectedImage: nil)
         
         profileViewController.tabBarItem = UITabBarItem(
             title: nil,
