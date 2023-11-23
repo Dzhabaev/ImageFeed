@@ -70,6 +70,7 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
             target: self,
             action: #selector(didTapLogoutButton)
         )
+        logoutButton.accessibilityIdentifier = "logout button"
         logoutButton.translatesAutoresizingMaskIntoConstraints = false
         logoutButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
         logoutButton.widthAnchor.constraint(equalToConstant: 44).isActive = true
@@ -157,6 +158,7 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
             message: "Уверены что хотите выйти?",
             preferredStyle: .alert
         )
+        alert.view.accessibilityIdentifier = "Bye bye!"
         
         alert.addAction(UIAlertAction(
             title: "Да",
@@ -167,6 +169,7 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
                 self.goToSplashViewController()
             })
         )
+        alert.actions.first?.accessibilityIdentifier = "Yes"
         
         alert.addAction(UIAlertAction(
             title: "Нет",

@@ -25,6 +25,7 @@ final class AuthViewController: UIViewController {
     
     private let signInButton: UIButton = {
         let signInButton = UIButton()
+        signInButton.accessibilityIdentifier = "Authenticate"
         signInButton.translatesAutoresizingMaskIntoConstraints = false
         signInButton.setTitle("Войти", for: .normal)
         signInButton.setTitleColor(.ypBlack, for: .normal)
