@@ -49,7 +49,6 @@
 		72ECF7DF2A9A561A00E84EB5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 72ECF7DD2A9A561A00E84EB5 /* Main.storyboard */; };
 		72ECF7E12A9A561B00E84EB5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 72ECF7E02A9A561B00E84EB5 /* Assets.xcassets */; };
 		72ECF7E42A9A561B00E84EB5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 72ECF7E22A9A561B00E84EB5 /* LaunchScreen.storyboard */; };
-		72F3E4FF2B0F6A6700954857 /* ImagesListTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F3E4F82B0F6A6200954857 /* ImagesListTests.swift */; };
 		72F3E50D2B0F7A0500954857 /* ProfileTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F3E5062B0F7A0100954857 /* ProfileTest.swift */; };
 /* End PBXBuildFile section */
 
@@ -580,7 +579,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				72F3E4FF2B0F6A6700954857 /* ImagesListTests.swift in Sources */,
 				7266DE5D2B0E609E0034FDD9 /* WebViewTests.swift in Sources */,
 				72F3E50D2B0F7A0500954857 /* ProfileTest.swift in Sources */,
 			);

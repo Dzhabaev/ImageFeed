@@ -20,9 +20,7 @@ final class ImagesListTests: XCTestCase {
         let presenter = ImagesListPresenterSpy(imagesListService: imageListService)
         viewController.presenter = presenter
         presenter.view = viewController
-        
-        _ = viewController.view
-        
+        presenter.viewDidLoad()
         XCTAssertTrue(presenter.viewDidLoadCalled)
     }
     
