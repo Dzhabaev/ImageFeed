@@ -13,7 +13,7 @@ final class ImagesListService {
     static let shared = ImagesListService()
     
     // MARK: - Notifications
-    static let DidChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
+    static let didChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
     
     
     // MARK: - Initializers
@@ -59,7 +59,7 @@ final class ImagesListService {
                     self.lastLoadedPage = page
                     NotificationCenter.default
                         .post(
-                            name: ImagesListService.DidChangeNotification,
+                            name: ImagesListService.didChangeNotification,
                             object: self,
                             userInfo: ["Images" : self.photos]
                         )
@@ -119,7 +119,7 @@ final class ImagesListService {
         var request = URLRequest.makeHTTPRequest(
             path: "/photos?page=\(page)&&per_page=\(perPage)",
             httpMethod: "GET",
-            baseURL: AuthConfiguration.standard.apiBaseURL
+            baseURL: AuthConfiguration.standard.authApiBaseURL
         )
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
@@ -142,7 +142,7 @@ final class ImagesListService {
         var request = URLRequest.makeHTTPRequest(
             path: "photos/\(photoId)/like",
             httpMethod: httpMethod,
-            baseURL: AuthConfiguration.standard.apiBaseURL
+            baseURL: AuthConfiguration.standard.authApiBaseURL
         )
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request

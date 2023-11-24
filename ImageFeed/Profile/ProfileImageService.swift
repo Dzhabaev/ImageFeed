@@ -14,7 +14,7 @@ final class ProfileImageService {
     static let shared = ProfileImageService()
     
     // MARK: - Notification
-    static let DidChangeNotification = Notification.Name(rawValue: "ProfileImageProviderDidChange")
+    static let didChangeNotification = Notification.Name(rawValue: "ProfileImageProviderDidChange")
     
     // MARK: - Private Properties
     private let storageToken = OAuth2TokenStorage.shared
@@ -44,7 +44,7 @@ final class ProfileImageService {
                 completion(.success((self.avatarURL!)))
                 NotificationCenter.default
                     .post(
-                        name: ProfileImageService.DidChangeNotification,
+                        name: ProfileImageService.didChangeNotification,
                         object: self,
                         userInfo: ["URL": self.avatarURL!]
                     )
@@ -58,7 +58,7 @@ final class ProfileImageService {
     
     // MARK: - Helper Methods
     private func makeRequest(token: String, username: String) -> URLRequest {
-        guard let url = URL(string: "\(AuthConfiguration.standard.apiBaseURL)" + "/users/" + username) else { fatalError("Failed to create URL") }
+        guard let url = URL(string: "\(AuthConfiguration.standard.authApiBaseURL)" + "/users/" + username) else { fatalError("Failed to create URL") }
         var request = URLRequest(url: url)
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request

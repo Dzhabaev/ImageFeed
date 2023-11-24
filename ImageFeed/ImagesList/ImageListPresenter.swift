@@ -32,7 +32,7 @@ final class ImageListPresenter: ImagesListPresenterProtocol {
     
     func setupObservers() {
         NotificationCenter.default.addObserver(
-            forName: ImagesListService.DidChangeNotification,
+            forName: ImagesListService.didChangeNotification,
             object: nil,
             queue: nil
         ) { [weak self] _ in

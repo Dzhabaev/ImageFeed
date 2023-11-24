@@ -9,10 +9,10 @@ import XCTest
 
 final class ImageFeedUITests: XCTestCase {
     
-    let yourEmail = "******"
-    let yourPassword = "******"
-    let yourFullName = "******"
-    let yourUserName = "******"
+    let yourEmail = " "
+    let yourPassword = " "
+    let yourFullName = " "
+    let yourUserName = " "
     
     private let app = XCUIApplication()
     
@@ -39,7 +39,7 @@ final class ImageFeedUITests: XCTestCase {
         
         passwordTextField.tap()
         passwordTextField.typeText(yourPassword)
-        webView.swipeUp()
+        app.toolbars.buttons["Done"].tap()
         
         webView.buttons["Login"].tap()
         

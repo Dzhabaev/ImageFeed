@@ -15,6 +15,9 @@ protocol AuthViewControllerDelegate: AnyObject {
 // MARK: - AuthViewController
 final class AuthViewController: UIViewController {
     
+    // MARK: - Public Properties
+    weak var delegate: AuthViewControllerDelegate?
+    
     // MARK: - UI Elements
     private let authScreenLogo: UIImageView = {
         let authScreenLogo = UIImageView()
@@ -40,8 +43,7 @@ final class AuthViewController: UIViewController {
         return signInButton
     }()
     
-    //MARK: - Properties
-    weak var delegate: AuthViewControllerDelegate?
+    // MARK: - Private Properties
     private let showWebViewSegueIdentifier = "ShowWebView"
     private let oauth2Service = OAuth2Service()
     

@@ -29,8 +29,11 @@ final class SplashViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        if let token = oauth2TokenStorage.token {
+        guard UIBlockingProgressHUD.isShowing == false else { return }
+        
+        if let token = OAuth2TokenStorage.shared.token {
             fetchProfile(token: token)
+            switchToTabBarController()
         } else {
             let authViewController = AuthViewController()
             authViewController.delegate = self

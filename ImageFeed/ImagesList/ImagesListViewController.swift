@@ -8,23 +8,27 @@
 import Kingfisher
 import UIKit
 
+// MARK: - ImagesListViewControllerProtocol
 protocol ImagesListViewControllerProtocol: AnyObject {
     var presenter: ImagesListPresenterProtocol? {get set}
     func updateTableViewAnimated()
     var photos: [Photo] {get set}
 }
 
+// MARK: - ImagesListViewController
 final class ImagesListViewController: UIViewController & ImagesListViewControllerProtocol {
+    
+    // MARK: - Public Properties
     var presenter: ImagesListPresenterProtocol? = {
         return ImageListPresenter()
     } ()
+    var photos: [Photo] = []
     
     // MARK: - IB Outlets
     @IBOutlet private var tableView: UITableView!
     
-    // MARK: - Properties
-    var photos: [Photo] = []
-    private let ShowSingleImageSegueIdentifier = "ShowSingleImage"
+    // MARK: - Private Properties
+    private let showSingleImageSegueIdentifier = "ShowSingleImage"
     private let imagesListService = ImagesListService.shared
     
     // MARK: - View Life Cycles
@@ -38,7 +42,7 @@ final class ImagesListViewController: UIViewController & ImagesListViewControlle
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == ShowSingleImageSegueIdentifier {
+        if segue.identifier == showSingleImageSegueIdentifier {
             let viewController = segue.destination as! SingleImageViewController
             let indexPath = sender as! IndexPath
             let imageURL = URL(string: photos[indexPath.row].fullImageURL)
@@ -53,16 +57,16 @@ final class ImagesListViewController: UIViewController & ImagesListViewControlle
         let oldCount = photos.count
         let newCount = imagesListService.photos.count
         photos = imagesListService.photos
-        if oldCount != newCount {
-            tableView.performBatchUpdates {
-                let indexPaths = (oldCount..<newCount).map { i in
-                    IndexPath(row: i, section: 0)
-                }
-                tableView.insertRows(
-                    at: indexPaths,
-                    with: .automatic
-                )
-            } completion: { _ in }
+        if oldCount > newCount {
+            let indexPathsToDelete = (newCount..<oldCount).map { i in
+                IndexPath(row: i, section: 0)
+            }
+            tableView.deleteRows(at: indexPathsToDelete, with: .automatic)
+        } else if oldCount < newCount {
+            let indexPathsToInsert = (oldCount..<newCount).map { i in
+                IndexPath(row: i, section: 0)
+            }
+            tableView.insertRows(at: indexPathsToInsert, with: .automatic)
         }
     }
     
@@ -75,11 +79,10 @@ final class ImagesListViewController: UIViewController & ImagesListViewControlle
         }
     }
     
-    private let dateFormatter: DateFormatter = {
+    private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
+        formatter.dateFormat = "dd MMMM yyyy"
         formatter.locale = Locale(identifier: "ru_RU")
-        formatter.dateStyle = .long
-        formatter.timeStyle = .none
         return formatter
     }()
 }
@@ -131,7 +134,7 @@ extension ImagesListViewController {
 //MARK: - UITableViewDelegate
 extension ImagesListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        performSegue(withIdentifier: ShowSingleImageSegueIdentifier, sender: indexPath)
+        performSegue(withIdentifier: showSingleImageSegueIdentifier, sender: indexPath)
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let cell = photos[indexPath.row]
@@ -147,7 +150,8 @@ extension ImagesListViewController: ImagesListCellDelegate {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
         let photo = photos[indexPath.row]
         UIBlockingProgressHUD.show()
-        presenter?.setLike(photoId: photo.id, isLike: photo.isLiked) {result in
+        presenter?.setLike(photoId: photo.id, isLike: photo.isLiked) { [weak self] result in
+            guard let self = self else { return }
             DispatchQueue.main.async {
                 switch result {
                 case .success:
