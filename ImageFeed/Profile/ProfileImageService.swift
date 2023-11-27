@@ -10,13 +10,26 @@ import UIKit
 
 final class ProfileImageService {
     
+    // MARK: - Singleton Instance
     static let shared = ProfileImageService()
-    static let DidChangeNotification = Notification.Name(rawValue: "ProfileImageProviderDidChange")
-    private (set) var avatarURL: String?
+    
+    // MARK: - Notification
+    static let didChangeNotification = Notification.Name(rawValue: "ProfileImageProviderDidChange")
+    
+    // MARK: - Private Properties
+    private let storageToken = OAuth2TokenStorage.shared
     private let urlSession = URLSession.shared
     private var task: URLSessionTask?
-    private let storageToken = OAuth2TokenStorage.shared
+    private (set) var avatarURL: String?
     
+    // MARK: - Clean Up
+    func clean() {
+        avatarURL = nil
+        task?.cancel()
+        task = nil
+    }
+    
+    // MARK: - Fetch Profile Image URL
     func fetchProfileImageURL(username: String, _ completion: @escaping (Result<String, Error>) -> Void) {
         assert(Thread.isMainThread)
         
@@ -31,7 +44,7 @@ final class ProfileImageService {
                 completion(.success((self.avatarURL!)))
                 NotificationCenter.default
                     .post(
-                        name: ProfileImageService.DidChangeNotification,
+                        name: ProfileImageService.didChangeNotification,
                         object: self,
                         userInfo: ["URL": self.avatarURL!]
                     )
@@ -42,27 +55,12 @@ final class ProfileImageService {
         self.task = task
         task.resume()
     }
-
+    
+    // MARK: - Helper Methods
     private func makeRequest(token: String, username: String) -> URLRequest {
-        guard let url = URL(string: "\(Constants.apiBaseURL)" + "/users/" + username) else { fatalError("Failed to create URL") }
+        guard let url = URL(string: "\(AuthConfiguration.standard.authApiBaseURL)" + "/users/" + username) else { fatalError("Failed to create URL") }
         var request = URLRequest(url: url)
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
-    }
-}
-
-struct UserResult: Codable {
-    let profileImage: [String: String]
-    
-    enum CodingKeys: String, CodingKey {
-        case profileImage = "profile_image"
-    }
-}
-
-struct ProfileImage: Codable {
-    let profileImage: [String: String]
-    
-    init(decodedData: UserResult) {
-        self.profileImage = decodedData.profileImage
     }
 }

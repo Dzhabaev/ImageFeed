@@ -6,75 +6,113 @@
 //
 
 import UIKit
-import Kingfisher
 
-final class ProfileViewController: UIViewController {
-    private let profileService = ProfileService.shared
-    private let tokenStorage = OAuth2TokenStorage.shared
-    private let avatarImageView = UIImageView()
-    private let nameLabel = UILabel()
-    private let loginNameLabel = UILabel()
-    private let descriptionLabel = UILabel()
-    private let logoutButton = UIButton.systemButton(with: UIImage(named: "logout_button")!,
-                                                     target: self,
-                                                     action: #selector(didTapLogoutButton))
-    private var profileImageServiceObserver: NSObjectProtocol?
+// MARK: - ProfileViewControllerProtocol
+public protocol ProfileViewControllerProtocol: AnyObject {
+    var presenter: ProfilePresenterProtocol? { get set }
+    func setName(_ name: String)
+    func setLoginName(_ loginName: String)
+    func setDescription(_ description: String)
+    func setAvatarImage(_ image: UIImage?)
+}
+
+// MARK: - ProfileViewController
+final class ProfileViewController: UIViewController & ProfileViewControllerProtocol {
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupUI()
-        updateProfileDetails(profile: profileService.profile)
-        observeAvatarChanges()
-        updateAvatar()
-    }
+    //MARK: - Properties
+    var presenter: ProfilePresenterProtocol?
     
-    private func setupUI() {
-        setupAvatarImageView()
-        setupNameLabel()
-        setupLoginNameLabel()
-        setupDescriptionLabel()
-        setupLogoutButton()
-        setupConstraints()
-    }
-    private func setupAvatarImageView() {
+    // MARK: - UI Elements
+    private let avatarImageView: UIImageView = {
+        let avatarImageView = UIImageView()
         avatarImageView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(avatarImageView)
-    }
-    private func setupNameLabel() {
+        return avatarImageView
+    }()
+    
+    private let nameLabel: UILabel = {
+        let nameLabel = UILabel()
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(nameLabel)
         nameLabel.font = .boldSystemFont(ofSize: 23)
         nameLabel.textColor = .white
-    }
-    private func setupLoginNameLabel() {
+        return nameLabel
+    }()
+    
+    private let loginNameLabel: UILabel = {
+        let loginNameLabel = UILabel()
         loginNameLabel.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(loginNameLabel)
         loginNameLabel.font = .systemFont(ofSize: 13)
-        loginNameLabel.textColor = UIColor(red: 174/255, green: 175/255, blue: 180/255, alpha: 1)
-    }
-    private func setupDescriptionLabel() {
+        loginNameLabel.textColor = .ypGray
+        return loginNameLabel
+    }()
+    
+    private let descriptionLabel: UILabel = {
+        let descriptionLabel = UILabel()
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(descriptionLabel)
         descriptionLabel.font = .systemFont(ofSize: 13)
         descriptionLabel.textColor = .white
         descriptionLabel.numberOfLines = 0
         descriptionLabel.lineBreakMode = .byWordWrapping
         descriptionLabel.isUserInteractionEnabled = true
-        
         let attributedString = NSMutableAttributedString(string: "To fill out a Bio, go to the website https://unsplash.com/ and edit the profile in the Bio section and then don’t forget to click the 'Update account' button at the bottom.")
         attributedString.addAttribute(.link, value: "https://unsplash.com/", range: NSMakeRange(31, 18))
         descriptionLabel.attributedText = attributedString
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapLink(_:)))
+        let tapGesture = UITapGestureRecognizer(
+            target: self,
+            action: #selector(didTapLink(_:))
+        )
         descriptionLabel.addGestureRecognizer(tapGesture)
-    }
-    private func setupLogoutButton() {
+        return descriptionLabel
+    }()
+    
+    private let logoutButton: UIButton = {
+        let logoutButton = UIButton.systemButton(
+            with: UIImage(named: "exitButton")!,
+            target: self,
+            action: #selector(didTapLogoutButton)
+        )
+        logoutButton.accessibilityIdentifier = "logout button"
         logoutButton.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(logoutButton)
         logoutButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
         logoutButton.widthAnchor.constraint(equalToConstant: 44).isActive = true
-        logoutButton.tintColor = UIColor(red: 245/255, green: 107/255, blue: 108/255, alpha: 1)
+        logoutButton.tintColor = .ypRed
+        return logoutButton
+    }()
+    
+    // MARK: - View Life Cycles
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        addSubview()
+        applyConstraints()
+        presenter?.viewDidLoad()
+        view.backgroundColor = .ypBlack
     }
-    private func setupConstraints() {
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        presenter?.updateAvatar()
+    }
+    
+    // MARK: - Action Methods
+    @objc private func didTapLogoutButton() {
+        logoutAction()
+    }
+    
+    @objc private func didTapLink(_ sender: UITapGestureRecognizer) {
+        if let url = URL(string: "https://unsplash.com/account/") {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
+    }
+    
+    // MARK: - UI Setup Methods
+    private func addSubview() {
+        view.addSubview(avatarImageView)
+        view.addSubview(nameLabel)
+        view.addSubview(loginNameLabel)
+        view.addSubview(descriptionLabel)
+        view.addSubview(logoutButton)
+    }
+    
+    private func applyConstraints() {
         NSLayoutConstraint.activate([
             avatarImageView.widthAnchor.constraint(equalToConstant: 70),
             avatarImageView.heightAnchor.constraint(equalToConstant: 70),
@@ -96,58 +134,55 @@ final class ProfileViewController: UIViewController {
         ])
     }
     
-    @objc private func didTapLogoutButton() {
+    // MARK: - Methods
+    func setName(_ name: String) {
+        nameLabel.text = name
     }
     
-    @objc private func didTapLink(_ sender: UITapGestureRecognizer) {
-        if let url = URL(string: "https://unsplash.com/account/") {
-            UIApplication.shared.open(url, options: [:], completionHandler: nil)
-        }
-    }
-}
-
-extension ProfileViewController {
-    private func updateProfileDetails(profile: Profile?) {
-        guard let profile = profileService.profile else {return}
-        nameLabel.text = profile.name
-        loginNameLabel.text = profile.loginName
-        if let bio = profile.bio, !bio.isEmpty {
-            descriptionLabel.text = bio
-        } else {
-            descriptionLabel.text = "To fill out a Bio, go to the website 'https://unsplash.com/' and edit the profile in the 'Bio' section and then don’t forget to click the 'Update account' button at the bottom."
-        }
+    func setLoginName(_ loginName: String) {
+        loginNameLabel.text = loginName
     }
     
-    private func observeAvatarChanges(){
-        profileImageServiceObserver = NotificationCenter.default
-            .addObserver(
-                forName: ProfileImageService.DidChangeNotification,
-                object: nil,
-                queue: .main
-            ){
-                [weak self] _ in
-                guard let self = self else {return}
-                self.updateAvatar()
-            }
-        updateAvatar()
+    func setDescription(_ description: String) {
+        descriptionLabel.text = description
     }
     
-    private func updateAvatar() {
-        guard
-            let profileImageURL = ProfileImageService.shared.avatarURL,
-            let url = URL(string: profileImageURL)
-        else {
-            return
-        }
-        avatarImageView.kf.indicatorType = .activity
-        let processor = RoundCornerImageProcessor(cornerRadius: 61)
-        avatarImageView.kf.setImage(
-            with: url,
-            placeholder: UIImage(named: "placeholder"),
-            options: [.processor(processor)]
+    func setAvatarImage(_ image: UIImage?) {
+        avatarImageView.image = image
+    }
+    
+    // MARK: - Logout
+    private func logoutAction() {
+        let alert = UIAlertController(
+            title: "Пока, пока!",
+            message: "Уверены что хотите выйти?",
+            preferredStyle: .alert
         )
-        let cache = ImageCache.default
-        cache.clearDiskCache()
-        cache.clearMemoryCache()
+        alert.view.accessibilityIdentifier = "Bye bye!"
+        
+        alert.addAction(UIAlertAction(
+            title: "Да",
+            style: .default,
+            handler: { [ weak self ] action in
+                guard let self = self else { return }
+                self.presenter?.clean()
+                self.goToSplashViewController()
+            })
+        )
+        alert.actions.first?.accessibilityIdentifier = "Yes"
+        
+        alert.addAction(UIAlertAction(
+            title: "Нет",
+            style: .cancel,
+            handler: nil)
+        )
+        
+        present(alert, animated: true, completion: nil)
+    }
+    
+    private func goToSplashViewController() {
+        let viewController = SplashViewController()
+        guard let window = UIApplication.shared.windows.first else { fatalError("Invalid Configuration") }
+        window.rootViewController = viewController
     }
 }

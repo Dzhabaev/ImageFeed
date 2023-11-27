@@ -8,8 +8,9 @@
 import Foundation
 
 // MARK: - OAuth2Service
-
 final class OAuth2Service {
+    
+    // MARK: - Properties
     static let shared = OAuth2Service()
     private let urlSession = URLSession.shared
     private var task: URLSessionTask?
@@ -23,6 +24,7 @@ final class OAuth2Service {
         }
     }
     
+    // MARK: - Public Methods
     func fetchOAuthToken(_ code: String, completion: @escaping (Result<String, Error>) -> Void) {
         assert(Thread.isMainThread)
         if lastCode == code {return}
@@ -49,19 +51,20 @@ final class OAuth2Service {
     }
 }
 
-// MARK: - Private Methods
-
+// MARK: - Auth Token Request Extension
 extension OAuth2Service {
     private func authTokenRequest(code: String) -> URLRequest {
-        URLRequest.makeHTTPRequest(
+        let configuration = AuthConfiguration.standard
+        let baseURL = configuration.authBaseURL
+        return URLRequest.makeHTTPRequest(
             path: "/oauth/token"
-            + "?client_id=\(Constants.accessKey)"
-            + "&&client_secret=\(Constants.secretKey)"
-            + "&&redirect_uri=\(Constants.redirectURI)"
+            + "?client_id=\(configuration.authAccessKey)"
+            + "&&client_secret=\(configuration.authSecretKey)"
+            + "&&redirect_uri=\(configuration.authRedirectURI)"
             + "&&code=\(code)"
             + "&&grant_type=authorization_code",
             httpMethod: "POST",
-            baseURL: URL(string: "https://unsplash.com")!
+            baseURL: baseURL
         )
     }
 }
