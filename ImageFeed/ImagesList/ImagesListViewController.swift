@@ -42,9 +42,9 @@ final class ImagesListViewController: UIViewController & ImagesListViewControlle
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == showSingleImageSegueIdentifier {
-            let viewController = segue.destination as! SingleImageViewController
-            let indexPath = sender as! IndexPath
+        if segue.identifier == showSingleImageSegueIdentifier,
+           let viewController = segue.destination as? SingleImageViewController,
+           let indexPath = sender as? IndexPath {
             let imageURL = URL(string: photos[indexPath.row].fullImageURL)
             viewController.fullImageURL = imageURL
         } else {
